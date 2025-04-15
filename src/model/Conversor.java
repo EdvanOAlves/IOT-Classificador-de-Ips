@@ -1,8 +1,21 @@
 package model;
 
-public class Conversor {
+public class Conversor{
+
     public static char classificarRede(int firstOctet) {
-        return 0;
+        char ipClass = 'z';
+        if (firstOctet <= 127) {
+            ipClass = 'A';
+        } else if (firstOctet <= 191) {
+            ipClass = 'B';
+        } else if (firstOctet <= 223) {
+            ipClass = 'C';
+        }
+        else {
+            System.out.println("Alguma coisa deu errado");
+        }
+        return ipClass;
+
 
     }
 
@@ -43,3 +56,4 @@ public class Conversor {
         return maskBinary;
     }
 }
+
