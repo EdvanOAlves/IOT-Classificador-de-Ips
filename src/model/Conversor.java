@@ -55,5 +55,27 @@ public class Conversor{
         }
         return maskBinary;
     }
+
+    public static int calculateAvaliableIps(int mask){
+        int avaliableIps = 0;
+        if (mask % 8 == 0) { //Verificando se não tem sub-redes
+            for (int i = 1; i <= 4; i++) { //são 4 octetos, por isso 4 loops
+                if (!(mask >= 8)) {
+                    if (avaliableIps == 0) {
+                        avaliableIps += 255;
+                    } else {
+                        avaliableIps *= 255;
+                    }
+                    mask -= 8;
+                }
+                else {
+                    mask -=8;
+                }
+            }
+
+
+        }
+        return avaliableIps-2;
+    }
 }
 

@@ -35,7 +35,7 @@ public class Rede {
         System.out.println("Classe: " + Conversor.classificarRede(firstOctet));
         System.out.println("Máscara (decimal): "+ Conversor.convertMaskDecimal(mask));
         System.out.println("Máscara (binário): "+ Conversor.convertMaskBinary(mask));
-        System.out.println("Quantidade de ips disponíveis: ");
+        System.out.println("Quantidade de ips disponíveis: "+  Conversor.calculateAvaliableIps(mask));
 
     }
 
