@@ -2,6 +2,7 @@ package model;
 
 public class Rede {
     private String ip;
+    private int octetLenght;
     private int firstOctet;
     private int maskIndex;
     private int mask;
@@ -25,7 +26,8 @@ public class Rede {
     }
 
     private void extractFirstOctet(){
-        firstOctet = Integer.parseInt(ip.substring(0,3));
+        octetLenght = (ip.indexOf("."));
+        firstOctet = Integer.parseInt(ip.substring(0,octetLenght));
 
     }
 
