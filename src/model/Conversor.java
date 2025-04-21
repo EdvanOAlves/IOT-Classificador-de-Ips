@@ -5,7 +5,6 @@ public class Conversor{
     public static char classificarRede(int firstOctet) {
         char ipClass = 'z';
         if (firstOctet <= 127) {
-            System.out.println(firstOctet);
             ipClass = 'A';
         } else if (firstOctet <= 191) {
             ipClass = 'B';
