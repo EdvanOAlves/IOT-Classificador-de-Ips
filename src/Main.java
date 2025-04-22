@@ -5,9 +5,9 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-//    	Menu menu = new Menu();
-//    	
-//    	menu.mostrarMenu();
+    	Menu menu = new Menu();
+    	
+    	menu.mostrarMenu();
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Hello world!");
