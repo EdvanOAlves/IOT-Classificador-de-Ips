@@ -17,7 +17,6 @@ public class Rede {
 
     private void extractMaskIndex(){
         maskIndex = (ip.indexOf("/")+1);
-
     }
 
     private void extractMask(){

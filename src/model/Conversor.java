@@ -21,7 +21,7 @@ public class Conversor{
 
     public static String convertMaskDecimal(int mask) {
         String maskDecimal = "";
-        if (mask % 8 == 0) { //Verificando se n„o tem sub-redes
+        if (mask % 8 == 0) { //Em caso de sem sub-redes
             for (int i = 1; i <= 4; i++) { //s„o 4 octetos, por isso 4 loops
                 if (mask >= 8) {
                     maskDecimal += "255.";
@@ -30,10 +30,25 @@ public class Conversor{
                     maskDecimal += "0.";
                 }
             }
-            maskDecimal = maskDecimal.substring(0, maskDecimal.length() - 1);
-        } else {
-            System.out.println("Ainda n√£o foi implementada fun√ß√£o de sub-redes");
+        } else {	//Em caso de com sub-redes
+        	for (int i = 1; i<= 4; i++) {
+        		if (mask == 0) {
+        			maskDecimal += "0.";
+        		}
+        		else if (mask > 0 && mask< 8) {
+        			double disponiveisDecimal = Math.pow(2.0, (8-mask));
+        			double subMaskDecimal = 256-disponiveisDecimal;
+        			maskDecimal += Integer.toString((int)(subMaskDecimal))+ ".";
+        			mask = 0;
+        		}
+        		else if (mask >= 8) {
+        			maskDecimal += "255.";
+        			mask -=8;
+        		}
+        		
+        	}
         }
+        maskDecimal = maskDecimal.substring(0, maskDecimal.length() - 1);
         return maskDecimal;
     }
 
@@ -49,16 +64,41 @@ public class Conversor{
                 } else {
                     maskBinary += "00000000 ";
                 }
-
-            }
-            maskBinary = maskBinary.substring(0, maskBinary.length() - 1);
+            } 
         }
+        else {
+        	int octetoCounter = 0;
+        	for (int i = 0; i < 32; i++) {
+        		
+        		if (mask>0) {
+        			maskBinary += "1";
+        			mask-=1;
+        			octetoCounter++;
+        			if (octetoCounter == 8) {
+        				maskBinary += " ";
+        				octetoCounter = 0;
+        			}
+        		}
+        		else {
+        			maskBinary += "0";
+        			octetoCounter++;
+        			if (octetoCounter == 8) {
+        				maskBinary += " ";
+        				octetoCounter = 0;
+        			}
+        		}
+        	}
+        }
+        
+        maskBinary = maskBinary.substring(0, maskBinary.length() - 1);
         return maskBinary;
     }
 
     public static int calculateAvaliableIps(int mask){
+    	// Tentativa 1
+    	/*
         int avaliableIps = 0;
-        if (mask % 8 == 0) { //Verificando se n„o tem sub-redes
+        if (mask % 8 == 0) { //Em caso de sem sub-redes
             for (int i = 1; i <= 4; i++) { //s„o 4 octetos, por isso 4 loops
                 if (!(mask >= 8)) {
                     if (avaliableIps == 0) {
@@ -72,10 +112,31 @@ public class Conversor{
                     mask -=8;
                 }
             }
-
-
+            avaliableIps-=2;
         }
-        return avaliableIps-2;
+        else { //Em caso de com sub-redes
+        	int nonMasked = 32;
+        	for (int i = 1 ; i<=4; i++) {
+        		System.out.println("roda" + i);
+        		System.out.println(nonMasked);
+        		System.out.println(mask);
+
+        		if (mask <8) {
+        			System.out.println(mask);
+        			nonMasked = 8-mask;
+        			System.out.println(nonMasked);
+        			avaliableIps = ((int)(Math.pow(2.0, nonMasked)))-(2);
+        		}
+        		else if (mask > 8) {
+        			nonMasked -=8;
+        			mask-=8;
+        		}
+        	}
+        }
+        */
+    	
+    	double avaliableIps = Math.pow(2.0, (32-mask));
+        return ((int)avaliableIps-2);
     }
 }
 
