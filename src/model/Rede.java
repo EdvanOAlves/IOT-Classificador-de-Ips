@@ -32,12 +32,12 @@ public class Rede {
     }
 
     private void showNet(){
-        System.out.println("Aqui as informaÃ§Ãµes da sua rede: ");
+        System.out.println("Aqui as informações da sua rede: ");
         System.out.println("ip: "+ ip);
         System.out.println("Classe: " + Conversor.classificarRede(firstOctet));
-        System.out.println("MÃ¡scara (decimal): "+ Conversor.convertMaskDecimal(mask));
-        System.out.println("MÃ¡scara (binÃ¡rio): "+ Conversor.convertMaskBinary(mask));
-        System.out.println("Quantidade de ips disponÃ­veis: "+  Conversor.calculateAvaliableIps(mask));
+        System.out.println("Máscara (decimal): "+ Conversor.convertMaskDecimal(mask));
+        System.out.println("Máscara (binário): "+ Conversor.convertMaskBinary(mask));
+        System.out.println("Quantidade de ips disponíveis: "+  Conversor.calculateAvaliableIps(mask));
 
     }
 

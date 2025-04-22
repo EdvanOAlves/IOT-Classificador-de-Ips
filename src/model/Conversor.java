@@ -43,11 +43,11 @@ public class Conversor{
         if (mask % 8 == 0) {
             for (int i = 1; i <= 4; i++) { //
                 if (mask >= 8) {
-                    maskBinary += "1111 ";
+                    maskBinary += "11111111 ";
                     mask -= 8;
 
                 } else {
-                    maskBinary += "0000 ";
+                    maskBinary += "00000000 ";
                 }
 
             }
@@ -58,8 +58,8 @@ public class Conversor{
 
     public static int calculateAvaliableIps(int mask){
         int avaliableIps = 0;
-        if (mask % 8 == 0) { //Verificando se n√£o tem sub-redes
-            for (int i = 1; i <= 4; i++) { //s√£o 4 octetos, por isso 4 loops
+        if (mask % 8 == 0) { //Verificando se n„o tem sub-redes
+            for (int i = 1; i <= 4; i++) { //s„o 4 octetos, por isso 4 loops
                 if (!(mask >= 8)) {
                     if (avaliableIps == 0) {
                         avaliableIps += 255;
