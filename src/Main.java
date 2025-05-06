@@ -21,7 +21,10 @@ public class Main {
     	ConversorTela tela = new ConversorTela();
     	tela.criarTela("Classificador de Ips");
 
-
+//TODO:
+    	//O sistema ainda precisa retornar quantas redes disponíveis naquele ip, isso vai incluir um calculo a mais em caso de sub-redes
+    	//retornar ip de rede, de host, de broadcast
+    	//montar o TryCatch, o programa ainda não é a prova de erros
 
 
 
