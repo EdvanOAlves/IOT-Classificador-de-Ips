@@ -6,7 +6,8 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
     	Menu menu = new Menu();
-    	
+    	ConversorTela tela = new ConversorTela();
+    	tela.criarTela("Classificador de Ips");
     	menu.mostrarMenu();
         Scanner scanner = new Scanner(System.in);
 

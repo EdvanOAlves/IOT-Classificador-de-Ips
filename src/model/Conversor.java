@@ -94,47 +94,7 @@ public class Conversor{
         return maskBinary;
     }
 
-    public static int calculateAvaliableIps(int mask){
-    	// Tentativa 1
-    	/*
-        int avaliableIps = 0;
-        if (mask % 8 == 0) { //Em caso de sem sub-redes
-            for (int i = 1; i <= 4; i++) { //são 4 octetos, por isso 4 loops
-                if (!(mask >= 8)) {
-                    if (avaliableIps == 0) {
-                        avaliableIps += 255;
-                    } else {
-                        avaliableIps *= 255;
-                    }
-                    mask -= 8;
-                }
-                else {
-                    mask -=8;
-                }
-            }
-            avaliableIps-=2;
-        }
-        else { //Em caso de com sub-redes
-        	int nonMasked = 32;
-        	for (int i = 1 ; i<=4; i++) {
-        		System.out.println("roda" + i);
-        		System.out.println(nonMasked);
-        		System.out.println(mask);
-
-        		if (mask <8) {
-        			System.out.println(mask);
-        			nonMasked = 8-mask;
-        			System.out.println(nonMasked);
-        			avaliableIps = ((int)(Math.pow(2.0, nonMasked)))-(2);
-        		}
-        		else if (mask > 8) {
-        			nonMasked -=8;
-        			mask-=8;
-        		}
-        	}
-        }
-        */
-    	
+    public static int calculateAvaliableIps(int mask){    	
     	double avaliableIps = Math.pow(2.0, (32-mask));
         return ((int)avaliableIps-2);
     }
