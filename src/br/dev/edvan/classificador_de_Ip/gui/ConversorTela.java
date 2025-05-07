@@ -53,8 +53,7 @@ public class ConversorTela {
 		labelIp.setBounds(20, 20, 150, 30);
 		
 		labelError = new JLabel();
-		labelError.setBounds(20, 100, 385, 30);
-		
+		labelError.setBounds(20, 115, 385, 30);
 		
 
 		// Criando text fields para a janela
@@ -63,7 +62,7 @@ public class ConversorTela {
 
 		// Criando botao para a janela
 		buttonClassificar = new JButton("Classificar");
-		buttonClassificar.setBounds(20, 80, 100, 30);
+		buttonClassificar.setBounds(20, 85, 100, 30);
 
 		// Obtendo referencia do Container, o painel de conteudo da janela
 		Container container = tela.getContentPane();
@@ -73,7 +72,7 @@ public class ConversorTela {
 
 		// Criar o Scrollpane que vai receber o JList
 		scrollClassificacao = new JScrollPane(listClassificacao);
-		scrollClassificacao.setBounds(20, 150, 410, 150);
+		scrollClassificacao.setBounds(20, 150, 395, 150);
 
 		// Adicionando elementos na janela
 		container.add(labelIp);

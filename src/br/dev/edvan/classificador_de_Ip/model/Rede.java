@@ -13,20 +13,35 @@ public class Rede {
 
 		// TODO: bugs para capturar:
 
-		// input invalido de pontos (10..0.0.0)
-		// ip com menos de 4 octetos (192.0.0/24)
-		try {
+		// Lidar com a brecha no input "10.../24",
+		// provavelmente vou precisar fazer um split ou usar um regex
 
+		int periodCount = 0;
+		for (int i = 0; i < ip.length(); i++) { // Verificação do String
+			if (ip.charAt(i) == '.') { // contagem de pontos
+				periodCount++;
+			}
+		}
+
+		if (periodCount > 3 || periodCount < 3) { // Verificação, se tem mais de um ponto
+			System.out.println(periodCount);
+			errorMessage = "Insira 4 octetos devidamente separados";
+		}
+
+		// Trycatchs para exceções genéricas
+		try {
 			extractMask();
 			extractFirstOctet();
-//			showNet();
 		} catch (NumberFormatException exception) {
 			errorMessage = "Formato inválido";
 
-		} catch (Exception e2) {
-			e2.printStackTrace();
-		}
+		} catch (StringIndexOutOfBoundsException exception) {
+			errorMessage = "Formato inválido";
 
+		} catch (Exception e) {
+			errorMessage = "Formato inválido e sem preparo";
+			e.printStackTrace();
+		}
 	}
 
 	// Comandos usados no construtor
@@ -71,8 +86,6 @@ public class Rede {
 	}
 
 	public String getDecimalMask() {
-		// TODO: ao invés desse if else subclasse poderia ser um método mais inteligente
-		// que funciona para os dois
 		String decimalMask = ""; // Iniciando a variável
 		int maskRef = mask; // Fazendo uma referencia da mascara para não alterar o valor original
 		for (int i = 1; i <= 4; i++) {
@@ -93,8 +106,6 @@ public class Rede {
 	}
 
 	public String getBinaryMask() {
-		// TODO: ao invés desse if else subclasse poderia ser um método mais inteligente
-		// que funciona para os dois
 		String binaryMask = "";
 		int maskRef = mask;
 		int octetoCounter = 0; // Contagem para separar em octetos
@@ -107,7 +118,6 @@ public class Rede {
 				binaryMask += "0";
 				octetoCounter++;
 			}
-
 			if (octetoCounter == 8) {
 				binaryMask += " ";
 				octetoCounter = 0;
@@ -122,30 +132,4 @@ public class Rede {
 		double avaliableIps = Math.pow(2.0, (32 - mask));
 		return ((int) avaliableIps - 2);
 	}
-
-	// Métodos antigos de output
-
-//	private void showNet() { //Metodo antigo de output, no console
-//		System.out.println("Aqui as informacoes da sua rede: ");
-//		System.out.println("ip: " + ip);
-//		System.out.println("Classe: " + Conversor.classificarRede(firstOctet));
-//		System.out.println("Mascara (decimal): " + Conversor.convertMaskDecimal(mask));
-//		System.out.println("Mascara (binário): " + Conversor.convertMaskBinary(mask));
-//		System.out.println("Quantidade de ips disponiveis: " + Conversor.calculateAvaliableIps(mask));
-//	}
-
-//	public String[] mostrarPerfil() { // Método antigo de output para a interface grafica
-//		String[] perfil = new String[5];
-//		if (errorMessage == "none") {
-//			perfil[0] = "ip: " + ip; //
-//			perfil[1] = "Classe: " + Conversor.classificarRede(firstOctet); //
-//			perfil[2] = "Máscara (decimal): " + Conversor.convertMaskDecimal(mask);//
-//			perfil[3] = "Máscara (binário): " + Conversor.convertMaskBinary(mask); //
-//			perfil[4] = "Quantidade de ips disponíveis: " + Conversor.calculateAvaliableIps(mask);
-//		} else {
-//			perfil[0] = errorMessage;
-//		}
-//		return perfil;
-//
-//	}
 }
