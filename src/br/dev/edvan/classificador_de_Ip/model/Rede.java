@@ -77,8 +77,8 @@ public class Rede {
         int maskRef = mask; //Fazendo uma referencia da mascara para não alterar o valor original
         if (maskRef % 8 == 0) { //Em caso de sem sub-redes
             for (int i = 1; i <= 4; i++) { //sao 4 octetos, por isso 4 loops
-                //Essencialmente
-            	if (maskRef >= 8) { 
+                //Dois casos, ou é um octeto cheio ou um vazio, por isso, 255 ou 0
+            	if (maskRef >= 8) {
                 	decimalMask += "255.";
                 	maskRef -= 8;
                 } else {
@@ -90,17 +90,16 @@ public class Rede {
         		if (maskRef == 0) {
         			decimalMask += "0.";
         		}
-        		else if (mask > 0 && mask< 8) {
-        			double disponiveisDecimal = Math.pow(2.0, (8-mask));
-        			double subMaskDecimal = 256-disponiveisDecimal;
-        			decimalMask += Integer.toString((int)(subMaskDecimal))+ ".";
+        		else if (maskRef > 0 && maskRef< 8) {
+        			double disponiveisDecimal = Math.pow(2.0, (8-maskRef));
+        			int subMaskDecimal = (int)(256-disponiveisDecimal);
+        			decimalMask += (Integer.toString(subMaskDecimal))+ ".";
         			maskRef = 0;
         		}
-        		else if (mask >= 8) {
+        		else if (maskRef >= 8) {
         			decimalMask += "255.";
         			maskRef -=8;
-        		}
-        		
+        		}    		
         	}
         }
         decimalMask = decimalMask.substring(0, decimalMask.length() - 1);

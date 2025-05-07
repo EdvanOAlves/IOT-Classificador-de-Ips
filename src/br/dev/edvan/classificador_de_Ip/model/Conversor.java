@@ -1,5 +1,5 @@
 package br.dev.edvan.classificador_de_Ip.model;
-
+//Essa classe só está aqui para referencia, migrando tudo aqui para o Rede, lembrar de deletar assim que estiver tudo funcionando
 public class Conversor{
 
     public static char classificarRede(int firstOctet) {

@@ -2,7 +2,6 @@ package br.dev.edvan.classificador_de_Ip;
 import java.util.Scanner;
 
 import br.dev.edvan.classificador_de_Ip.gui.ConversorTela;
-import br.dev.edvan.classificador_de_Ip.model.Menu;
 import br.dev.edvan.classificador_de_Ip.model.Rede;
 
 public class Main {
@@ -19,7 +18,7 @@ public class Main {
 //    	String ip = scanner.nextLine();
 //    	Rede rede = new Rede(ip);
     	
-    	//INTERFACE GR�FICA
+    	//INTERFACE GRAFICA
     	ConversorTela tela = new ConversorTela();
     	tela.criarTela("Classificador de Ips");
 
