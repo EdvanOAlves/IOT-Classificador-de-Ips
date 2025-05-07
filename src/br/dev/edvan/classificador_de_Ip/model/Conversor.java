@@ -1,4 +1,4 @@
-package model;
+package br.dev.edvan.classificador_de_Ip.model;
 
 public class Conversor{
 
@@ -22,7 +22,7 @@ public class Conversor{
     public static String convertMaskDecimal(int mask) {
         String maskDecimal = "";
         if (mask % 8 == 0) { //Em caso de sem sub-redes
-            for (int i = 1; i <= 4; i++) { //são 4 octetos, por isso 4 loops
+            for (int i = 1; i <= 4; i++) { //sï¿½o 4 octetos, por isso 4 loops
                 if (mask >= 8) {
                     maskDecimal += "255.";
                     mask -= 8;

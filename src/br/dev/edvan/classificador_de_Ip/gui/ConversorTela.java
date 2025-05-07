@@ -1,3 +1,4 @@
+package br.dev.edvan.classificador_de_Ip.gui;
 
 
 import java.awt.Container;
@@ -10,27 +11,27 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import model.Rede;
+import br.dev.edvan.classificador_de_Ip.model.Rede;
 
 public class ConversorTela {
 	//
 	// ATRIBUTOS
 	//
 
-	// Comunicação com o usário e Input
+	// Comunicaï¿½ï¿½o com o usï¿½rio e Input
 	private JLabel labelIp;
 	private JTextField textIpCidr;
 
-	// Botões para executar os métodos
+	// Botï¿½es para executar os mï¿½todos
 	private JButton buttonClassificar;
 
-	// Exibição e navegação dos resultados
+	// Exibiï¿½ï¿½o e navegaï¿½ï¿½o dos resultados
 	private JList listClassificacao;
 	private JScrollPane scrollClassificacao;
 	private String tituloDaTela;
 
 	//
-	// MÉTODOS
+	// Mï¿½TODOS
 	//
 
 	public void criarTela(String tituloDaTela) {
@@ -56,11 +57,11 @@ public class ConversorTela {
 		textIpCidr = new JTextField();
 		textIpCidr.setBounds(20, 50, 200, 30);
 
-		// Criando botões para a janela
+		// Criando botï¿½es para a janela
 		buttonClassificar = new JButton("Classificar");
 		buttonClassificar.setBounds(20, 90, 100, 30);
 
-		// Obtendo referência do Container, o painel de conteudo da janela
+		// Obtendo referï¿½ncia do Container, o painel de conteudo da janela
 		Container container = tela.getContentPane();
 
 		// Criar o JList que vai receber a tabuada
@@ -79,8 +80,8 @@ public class ConversorTela {
 		
 		container.add(scrollClassificacao);
 
-		// Adicionando escutantes de ação aos botões
-		buttonClassificar.addActionListener(new ActionListener() { // Funcionamento do botão Calcular
+		// Adicionando escutantes de aï¿½ï¿½o aos botï¿½es
+		buttonClassificar.addActionListener(new ActionListener() { // Funcionamento do botï¿½o Calcular
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -97,7 +98,7 @@ public class ConversorTela {
 			}
 		});
 
-		// tornando a tela visível
+		// tornando a tela visï¿½vel
 		tela.setVisible(true);
 	}
 

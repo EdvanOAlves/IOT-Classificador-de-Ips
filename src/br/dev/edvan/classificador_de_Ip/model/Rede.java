@@ -1,4 +1,4 @@
-package model;
+package br.dev.edvan.classificador_de_Ip.model;
 
 public class Rede {
 	private String ip;
@@ -31,12 +31,12 @@ public class Rede {
 	}
 
 	private void showNet() {
-		System.out.println("Aqui as informações da sua rede: ");
+		System.out.println("Aqui as informaï¿½ï¿½es da sua rede: ");
 		System.out.println("ip: " + ip);
 		System.out.println("Classe: " + Conversor.classificarRede(firstOctet));
-		System.out.println("Máscara (decimal): " + Conversor.convertMaskDecimal(mask));
-		System.out.println("Máscara (binário): " + Conversor.convertMaskBinary(mask));
-		System.out.println("Quantidade de ips disponíveis: " + Conversor.calculateAvaliableIps(mask));
+		System.out.println("Mï¿½scara (decimal): " + Conversor.convertMaskDecimal(mask));
+		System.out.println("Mï¿½scara (binï¿½rio): " + Conversor.convertMaskBinary(mask));
+		System.out.println("Quantidade de ips disponï¿½veis: " + Conversor.calculateAvaliableIps(mask));
 
 	}
 
@@ -44,9 +44,9 @@ public class Rede {
 		String[] perfil = new String[5];
 		perfil[0] = "ip: " + ip;
 		perfil[1] = "Classe: " + Conversor.classificarRede(firstOctet);
-		perfil[2] = "Máscara (decimal): " + Conversor.convertMaskDecimal(mask);
-		perfil[3] = "Máscara (binário): " + Conversor.convertMaskBinary(mask);
-		perfil[4] = "Quantidade de ips disponíveis: " + Conversor.calculateAvaliableIps(mask);
+		perfil[2] = "Mï¿½scara (decimal): " + Conversor.convertMaskDecimal(mask);
+		perfil[3] = "Mï¿½scara (binï¿½rio): " + Conversor.convertMaskBinary(mask);
+		perfil[4] = "Quantidade de ips disponï¿½veis: " + Conversor.calculateAvaliableIps(mask);
 		return perfil;
 
 	}
