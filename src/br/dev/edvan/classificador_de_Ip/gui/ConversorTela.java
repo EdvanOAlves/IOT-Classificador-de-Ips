@@ -18,14 +18,15 @@ public class ConversorTela {
 	// ATRIBUTOS
 	//
 
-	// Comunica��o com o us�rio e Input
+	// Comunicacao com o usario e Input
 	private JLabel labelIp;
-	private JTextField textIpCidr;
+	private JLabel labelError;
+	private JTextField textIp;
 
-	// Bot�es para executar os m�todos
+	// Botoes para executar os metodos
 	private JButton buttonClassificar;
 
-	// Exibi��o e navega��o dos resultados
+	// Exibicao e navegacao dos resultados
 	private JList listClassificacao;
 	private JScrollPane scrollClassificacao;
 	private String tituloDaTela;
@@ -40,28 +41,31 @@ public class ConversorTela {
 
 		// Instanciando e configurando o JFrame
 		JFrame tela = new JFrame();
+		tela.setLayout(null);
 		tela.setTitle(this.tituloDaTela); // titulo da janela
-		tela.setSize(405, 420); // tamanho da janela
+		tela.setSize(410, 420); // tamanho da janela
 		tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		tela.setResizable(false);
 
-		// Criando referencias para os Bounds
-
 		// Criando text labels para a janela
-		tela.setLayout(null);
 		labelIp = new JLabel();
 		labelIp.setText("Insira Ip:");
 		labelIp.setBounds(20, 20, 150, 30);
+		
+		labelError = new JLabel();
+		labelError.setBounds(20, 100, 385, 30);
+		
+		
 
 		// Criando text fields para a janela
-		textIpCidr = new JTextField();
-		textIpCidr.setBounds(20, 50, 200, 30);
+		textIp = new JTextField();
+		textIp.setBounds(20, 50, 200, 30);
 
-		// Criando bot�es para a janela
+		// Criando botao para a janela
 		buttonClassificar = new JButton("Classificar");
-		buttonClassificar.setBounds(20, 90, 100, 30);
+		buttonClassificar.setBounds(20, 80, 100, 30);
 
-		// Obtendo refer�ncia do Container, o painel de conteudo da janela
+		// Obtendo referencia do Container, o painel de conteudo da janela
 		Container container = tela.getContentPane();
 
 		// Criar o JList que vai receber a tabuada
@@ -74,31 +78,49 @@ public class ConversorTela {
 		// Adicionando elementos na janela
 		container.add(labelIp);
 
-		container.add(textIpCidr);
+		container.add(textIp);
+		
+		container.add(labelError);
 
 		container.add(buttonClassificar);
 		
 		container.add(scrollClassificacao);
 
-		// Adicionando escutantes de a��o aos bot�es
+		// Adicionando escutantes de acao ao botao
 		buttonClassificar.addActionListener(new ActionListener() { // Funcionamento do bot�o Calcular
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Coletando os valores nos campos
-				String ipCidr = textIpCidr.getText();
+				String ipCidr = textIp.getText();
 
 				// Fornecendo os valores para a tabuada
 				Rede rede = new Rede(ipCidr);
 
-				// Trazer a tabuada e colocar na tela
-				String[] classificacaoVisual = rede.mostrarPerfil();
-				listClassificacao.setListData(classificacaoVisual);
+				// Montagem do vetor para exibicao na tela
+				String[] classificacaoVisual = new String[5];
+				
+				classificacaoVisual[0] = "ip: " + rede.getIp();
+				classificacaoVisual[1] = "Classe: " + rede.getClasse();
+				classificacaoVisual[2] = "Mascara (Decimal): " + rede.getDecimalMask();
+				classificacaoVisual[3] = "Mascara (Binario): " + rede.getBinaryMask();
+				classificacaoVisual[4] = "Quantidade de ips disponiveis: " + rede.getAvaliableIps();
+
+				if (rede.errorMessage.equals("none")){ //Verificacao, se nao houve nenhum erro
+					listClassificacao.setListData(classificacaoVisual);
+					labelError.setText("");
+					
+				}
+				else {
+					labelError.setText(rede.errorMessage);
+					listClassificacao.setListData(new String[1]);
+					//TODO adicionar setText no labelError
+				}
 
 			}
 		});
 
-		// tornando a tela vis�vel
+		// tornando a tela visivel
 		tela.setVisible(true);
 	}
 

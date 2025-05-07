@@ -13,8 +13,8 @@ public class Main {
 //    	Scanner scanner = new Scanner(System.in);
 //    	
 //    	System.out.println("Hello world!");
-//    	System.out.println("Ol� calculadora humana!");
-//    	System.out.println("Esse � o classificador de ips, basta inserir um ip com m�scara em formato CIDR");
+//    	System.out.println("Olá calculadora humana!");
+//    	System.out.println("Esse é o classificador de ips, basta inserir um ip com máscara em formato CIDR");
 //    	System.out.println("Ex: 192.168.0.0/24");
 //    	String ip = scanner.nextLine();
 //    	Rede rede = new Rede(ip);
@@ -24,9 +24,10 @@ public class Main {
     	tela.criarTela("Classificador de Ips");
 
 //TODO:
-    	//O sistema ainda precisa retornar quantas redes dispon�veis naquele ip, isso vai incluir um calculo a mais em caso de sub-redes
+    	//O sistema ainda precisa retornar quantas redes disponíveis naquele ip, isso vai incluir um calculo a mais em caso de sub-redes
     	//retornar ip de rede, de host, de broadcast
-    	//montar o TryCatch, o programa ainda n�o � a prova de erros
+    	//montar o TryCatch, o programa ainda não é a prova de erros de input
+    	//Trazer os métodos da classe Conversor para Rede, montar gets e Sets, para otimização dos objetos
 
 
 
