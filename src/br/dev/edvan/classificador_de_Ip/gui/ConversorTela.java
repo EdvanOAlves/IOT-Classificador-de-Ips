@@ -43,7 +43,7 @@ public class ConversorTela {
 		JFrame tela = new JFrame();
 		tela.setLayout(null);
 		tela.setTitle(this.tituloDaTela); // titulo da janela
-		tela.setSize(410, 420); // tamanho da janela
+		tela.setSize(450, 420); // tamanho da janela
 		tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		tela.setResizable(false);
 
@@ -73,7 +73,7 @@ public class ConversorTela {
 
 		// Criar o Scrollpane que vai receber o JList
 		scrollClassificacao = new JScrollPane(listClassificacao);
-		scrollClassificacao.setBounds(20, 150, 350, 150);
+		scrollClassificacao.setBounds(20, 150, 410, 150);
 
 		// Adicionando elementos na janela
 		container.add(labelIp);
