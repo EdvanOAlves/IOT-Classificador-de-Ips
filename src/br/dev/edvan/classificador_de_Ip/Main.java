@@ -25,7 +25,9 @@ public class Main {
 //TODO:
     	//O sistema ainda precisa retornar quantas redes disponíveis naquele ip, isso vai incluir um calculo a mais em caso de sub-redes
     	//retornar ip de rede, de host, de broadcast
+    		//Para esses dois vou usar o ipSplit, também seria bacana substituir no getClass para otimização 
     	//Resolver pendencias no TODO do Trycatch
+    	
 
 
 

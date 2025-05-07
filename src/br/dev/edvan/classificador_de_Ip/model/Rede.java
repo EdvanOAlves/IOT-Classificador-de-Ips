@@ -5,6 +5,7 @@ public class Rede {
 	private int octetLenght;
 	private int firstOctet;
 	private int mask;
+	private String[] ipSplit;
 
 	public String errorMessage = "none";
 
@@ -13,8 +14,30 @@ public class Rede {
 
 		// TODO: bugs para capturar:
 
-		// Lidar com a brecha no input "10.../24",
-		// provavelmente vou precisar fazer um split ou usar um regex
+		// Previnir input de números maiores que 255, vai ser essencial para as próximas funcionalidades
+		
+		try {
+			extractMask();
+			extractFirstOctet();
+			splitIp();
+			
+		} catch (NumberFormatException exception) { //Previnindo input de letras
+			errorMessage = "Formato inválido";
+
+		} catch (StringIndexOutOfBoundsException exception) {
+			errorMessage = "Formato inválido";
+
+		} catch (NullPointerException exception) {
+			errorMessage = "Formato inválido";
+
+		} catch (Exception e) {
+			// Deixei esse aqui pra previnir tudo enquanto fica em aberto para em testes achar
+			// mais Exceções que façam sentido incluir no software
+			errorMessage = "Formato inválido e sem preparo";
+			e.printStackTrace();
+		}
+
+		// Verificações manuais
 
 		int periodCount = 0;
 		for (int i = 0; i < ip.length(); i++) { // Verificação do String
@@ -22,31 +45,28 @@ public class Rede {
 				periodCount++;
 			}
 		}
+		if (periodCount > 3 || periodCount < 3) { // Verificação, se a quantidade de pontos está adequadas
 
-		if (periodCount > 3 || periodCount < 3) { // Verificação, se tem mais de um ponto
-			System.out.println(periodCount);
 			errorMessage = "Insira 4 octetos devidamente separados";
 		}
 
-		// Trycatchs para exceções genéricas
-		try {
-			extractMask();
-			extractFirstOctet();
-		} catch (NumberFormatException exception) {
-			errorMessage = "Formato inválido";
-
-		} catch (StringIndexOutOfBoundsException exception) {
-			errorMessage = "Formato inválido";
-
-		} catch (Exception e) {
-			errorMessage = "Formato inválido e sem preparo";
-			e.printStackTrace();
-		}
 	}
 
 	// Comandos usados no construtor
+
+	
 	private void setIp(String ip) {
 		this.ip = ip;
+	}
+
+	private void splitIp() {
+		String ipIsolated[] = ip.split("/"); // Separando ip do CIDR
+		ipSplit = (ipIsolated[0]).split("\\."); // Separando ip por octetos
+		
+		//Verificação de um dos bugs, ela precisa ficar dentro do trycatch para detectar o bug dos símbolos especiais
+		if (ipSplit.length < 4) { // Resolvendo bug de input "10.../25"
+			errorMessage = "Formato inválido, faltam valores de octetos";
+		}
 	}
 
 	public void extractFirstOctet() {
