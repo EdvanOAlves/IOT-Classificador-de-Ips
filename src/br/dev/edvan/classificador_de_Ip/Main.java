@@ -26,8 +26,7 @@ public class Main {
 //TODO:
     	//O sistema ainda precisa retornar quantas redes disponíveis naquele ip, isso vai incluir um calculo a mais em caso de sub-redes
     	//retornar ip de rede, de host, de broadcast
-    	//montar o TryCatch, o programa ainda não é a prova de erros de input
-    	//Trazer os métodos da classe Conversor para Rede, montar gets e Sets, para otimização dos objetos
+    	//Resolver pendencias no TODO do Trycatch
 
 
 

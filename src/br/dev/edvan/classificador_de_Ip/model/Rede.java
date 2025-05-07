@@ -14,9 +14,10 @@ public class Rede {
 		
 		//TODO: bugs para capturar:
 		
-		//mais de um ponto (10..0.0.0)
+		//input invalido de pontos (10..0.0.0)
 		//ip com menos de 4 octetos (192.0.0/24)
 		try {
+			
 			extractMask();
 			extractFirstOctet();
 //			showNet();
@@ -39,7 +40,7 @@ public class Rede {
 		firstOctet = Integer.parseInt(ip.substring(0, octetLenght));
 	}
 
-	public void extractMask() {
+	public void extractMask() { //Separando máscara CIDR do ip, comparando se é um valor válido de CIDR
 		int maskIndex = (ip.indexOf("/") + 1);
 		mask = Integer.parseInt(ip.substring(maskIndex));
 		if ((mask < 0) || (mask >32)) {
@@ -71,11 +72,13 @@ public class Rede {
 	}
 	
 	public String getDecimalMask() {
-        String decimalMask = "";
-        int maskRef = mask;
+		//TODO: ao invés desse if else subclasse poderia ser um método mais inteligente que funciona para os dois
+        String decimalMask = ""; //Iniciando a variável
+        int maskRef = mask; //Fazendo uma referencia da mascara para não alterar o valor original
         if (maskRef % 8 == 0) { //Em caso de sem sub-redes
-            for (int i = 1; i <= 4; i++) { //s�o 4 octetos, por isso 4 loops
-                if (maskRef >= 8) {
+            for (int i = 1; i <= 4; i++) { //sao 4 octetos, por isso 4 loops
+                //Essencialmente
+            	if (maskRef >= 8) { 
                 	decimalMask += "255.";
                 	maskRef -= 8;
                 } else {
@@ -105,6 +108,7 @@ public class Rede {
 	}
 
 	public String getBinaryMask() {
+		//TODO: ao invés desse if else subclasse poderia ser um método mais inteligente que funciona para os dois
 		String binaryMask = "";
 		int maskRef = mask;
 		if (maskRef % 8 == 0) { // Caso Classfull
@@ -120,7 +124,6 @@ public class Rede {
 			
 		} 
 		else { // Caso subclasse
-			System.out.println("Rodou o subclasse");
 			int octetoCounter = 0; //Contagem para separar em octetos
 			for (int i = 0; i < 32; i++) {
 				if (maskRef > 0) {
