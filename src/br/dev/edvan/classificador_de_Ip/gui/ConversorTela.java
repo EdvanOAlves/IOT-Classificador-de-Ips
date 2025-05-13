@@ -15,15 +15,15 @@ import br.dev.edvan.classificador_de_Ip.model.Rede;
 
 public class ConversorTela {
 	//
-	// ATRIBUTOS
+	// DECLARANDO OS ELEMENTOS
 	//
-
+	
 	// Comunicacao com o usario e Input
 	private JLabel labelIp;
 	private JLabel labelError;
 	private JTextField textIp;
 
-	// Botoes para executar os metodos
+	// Botao de Start
 	private JButton buttonClassificar;
 
 	// Exibicao e navegacao dos resultados
@@ -32,7 +32,7 @@ public class ConversorTela {
 	private String tituloDaTela;
 
 	//
-	// M�TODOS
+	// METODO DE INICIALIZAÇÃO
 	//
 
 	public void criarTela(String tituloDaTela) {
@@ -47,7 +47,7 @@ public class ConversorTela {
 		tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		tela.setResizable(false);
 
-		// Criando text labels para a janela
+		// Inserindo valores nos text labels (Para pedir o input e retornar os erros)
 		labelIp = new JLabel();
 		labelIp.setText("Insira Ip:");
 		labelIp.setBounds(20, 20, 150, 30);
@@ -56,21 +56,21 @@ public class ConversorTela {
 		labelError.setBounds(20, 115, 385, 30);
 		
 
-		// Criando text fields para a janela
+		// Text field para input
 		textIp = new JTextField();
 		textIp.setBounds(20, 50, 200, 30);
 
-		// Criando botao para a janela
+		// Botão
 		buttonClassificar = new JButton("Classificar");
 		buttonClassificar.setBounds(20, 85, 100, 30);
 
 		// Obtendo referencia do Container, o painel de conteudo da janela
 		Container container = tela.getContentPane();
 
-		// Criar o JList que vai receber a tabuada
+		// JList que vai receber a tabuada
 		listClassificacao = new JList();
 
-		// Criar o Scrollpane que vai receber o JList
+		// Scrollpane que vai receber o JList
 		scrollClassificacao = new JScrollPane(listClassificacao);
 		scrollClassificacao.setBounds(20, 150, 395, 150);
 
@@ -85,15 +85,13 @@ public class ConversorTela {
 		
 		container.add(scrollClassificacao);
 
-		// Adicionando escutantes de acao ao botao
+		// Adicionando ouvintes de acao ao botao
 		buttonClassificar.addActionListener(new ActionListener() { // Funcionamento do bot�o Calcular
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Coletando os valores nos campos
+				// Passando os valores do campo e criando o objeto
 				String ipCidr = textIp.getText();
-
-				// Fornecendo os valores para a tabuada
 				Rede rede = new Rede(ipCidr);
 
 				// Montagem do vetor para exibicao na tela
@@ -113,7 +111,6 @@ public class ConversorTela {
 				else {
 					labelError.setText(rede.errorMessage);
 					listClassificacao.setListData(new String[1]);
-					//TODO adicionar setText no labelError
 				}
 
 			}
@@ -121,14 +118,6 @@ public class ConversorTela {
 
 		// tornando a tela visivel
 		tela.setVisible(true);
-	}
-
-	private void exibirTabuada() {
-
-	}
-
-	private void limparTabuada() {
-
 	}
 
 }

@@ -69,7 +69,7 @@ public class Rede {
 		}
 	}
 
-	public void extractFirstOctet() {
+	public void extractFirstOctet() { //Extraindo primeiro octeto, usado para classificação
 		octetLenght = (ip.indexOf("."));
 		firstOctet = Integer.parseInt(ip.substring(0, octetLenght));
 	}
@@ -125,7 +125,7 @@ public class Rede {
 		return decimalMask;
 	}
 
-	public String getBinaryMask() {
+	public String getBinaryMask() { //Conversão da máscara para binário
 		String binaryMask = "";
 		int maskRef = mask;
 		int octetoCounter = 0; // Contagem para separar em octetos
@@ -148,7 +148,7 @@ public class Rede {
 		return binaryMask;
 	}
 
-	public int getAvaliableIps() {
+	public int getAvaliableIps() { //Calculando a quantidade de endereços disponíveis
 		double avaliableIps = Math.pow(2.0, (32 - mask));
 		return ((int) avaliableIps - 2);
 	}
