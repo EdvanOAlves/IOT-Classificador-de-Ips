@@ -12,9 +12,6 @@ public class Rede {
 	public Rede(String ip) { // Rotina de tratamento do input, extrai as informacoes relevantes e expõe erros
 		setIp(ip); // Guardando o input inicial
 
-		// TODO: bugs para capturar:
-
-		// Previnir input de números maiores que 255, vai ser essencial para as próximas funcionalidades
 		
 		try {
 			extractMask();
@@ -66,6 +63,14 @@ public class Rede {
 		//Verificação de um dos bugs, ela precisa ficar dentro do trycatch para detectar o bug dos símbolos especiais
 		if (ipSplit.length < 4) { // Resolvendo bug de input "10.../25"
 			errorMessage = "Formato inválido, faltam valores de octetos";
+		}
+		
+		// Verificando se tá no range de 0 e 255
+		for (int i = 0 ; i < ipSplit.length ; i++) { 
+			if (Integer.parseInt(ipSplit[i]) > 255 || Integer.parseInt(ipSplit[i]) < 0) {
+				errorMessage = "Formato inválido, octetos devem estar entre 0 e 255";
+				
+			}
 		}
 	}
 
