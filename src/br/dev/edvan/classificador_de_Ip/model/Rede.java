@@ -15,7 +15,6 @@ public class Rede {
 		
 		try {
 			extractMask();
-			extractFirstOctet();
 			splitIp();
 			
 		} catch (NumberFormatException exception) { //Previnindo input de letras
@@ -74,11 +73,6 @@ public class Rede {
 		}
 	}
 
-	public void extractFirstOctet() { //Extraindo primeiro octeto, usado para classificação
-		octetLenght = (ip.indexOf("."));
-		firstOctet = Integer.parseInt(ip.substring(0, octetLenght));
-	}
-
 	public void extractMask() { // Separando máscara CIDR do ip, comparando se é um valor válido de CIDR
 		int maskIndex = (ip.indexOf("/") + 1);
 		mask = Integer.parseInt(ip.substring(maskIndex));
@@ -96,6 +90,7 @@ public class Rede {
 
 	public char getClasse() {
 		char ipClasse = 'z';
+		int firstOctet = Integer.parseInt(ipSplit[0]);
 		if (firstOctet <= 127) {
 			ipClasse = 'A';
 		} else if (firstOctet <= 191) {
