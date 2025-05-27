@@ -1,6 +1,5 @@
 package br.dev.edvan.classificador_de_Ip.gui;
 
-
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +16,7 @@ public class ConversorTela {
 	//
 	// DECLARANDO OS ELEMENTOS
 	//
-	
+
 	// Comunicacao com o usario e Input
 	private JLabel labelIp;
 	private JLabel labelError;
@@ -28,7 +27,9 @@ public class ConversorTela {
 
 	// Exibicao e navegacao dos resultados
 	private JList listClassificacao;
+	private JList listDadosSubRede;
 	private JScrollPane scrollClassificacao;
+	private JScrollPane scrollDadosSubRede;
 	private String tituloDaTela;
 
 	//
@@ -43,7 +44,7 @@ public class ConversorTela {
 		JFrame tela = new JFrame();
 		tela.setLayout(null);
 		tela.setTitle(this.tituloDaTela); // titulo da janela
-		tela.setSize(450, 420); // tamanho da janela
+		tela.setSize(450, 700); // tamanho da janela
 		tela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		tela.setResizable(false);
 
@@ -51,10 +52,9 @@ public class ConversorTela {
 		labelIp = new JLabel();
 		labelIp.setText("Insira Ip:");
 		labelIp.setBounds(20, 20, 150, 30);
-		
+
 		labelError = new JLabel();
 		labelError.setBounds(20, 115, 385, 30);
-		
 
 		// Text field para input
 		textIp = new JTextField();
@@ -67,23 +67,29 @@ public class ConversorTela {
 		// Obtendo referencia do Container, o painel de conteudo da janela
 		Container container = tela.getContentPane();
 
-		// JList que vai receber a tabuada
+		// JList e ScrollPane que vai receber o output para as informações básicas
 		listClassificacao = new JList();
-
-		// Scrollpane que vai receber o JList
 		scrollClassificacao = new JScrollPane(listClassificacao);
 		scrollClassificacao.setBounds(20, 150, 395, 150);
+
+		// JList e ScrollPane Para dados de sub-Redes acima de 24 CIDR \o/
+
+		listDadosSubRede = new JList();
+		scrollDadosSubRede = new JScrollPane(listDadosSubRede);
+		scrollDadosSubRede.setBounds(20, 310, 395, 350);
 
 		// Adicionando elementos na janela
 		container.add(labelIp);
 
 		container.add(textIp);
-		
+
 		container.add(labelError);
 
 		container.add(buttonClassificar);
-		
+
 		container.add(scrollClassificacao);
+
+		container.add(scrollDadosSubRede);
 
 		// Adicionando ouvintes de acao ao botao
 		buttonClassificar.addActionListener(new ActionListener() { // Funcionamento do bot�o Calcular
@@ -96,21 +102,62 @@ public class ConversorTela {
 
 				// Montagem do vetor para exibicao na tela
 				String[] classificacaoVisual = new String[5];
-				
+				String[] listFichas = null;
+				String[][] fichasSubRede = null;
+
 				classificacaoVisual[0] = "ip: " + rede.getIp();
 				classificacaoVisual[1] = "Classe: " + rede.getClasse();
 				classificacaoVisual[2] = "Mascara (Decimal): " + rede.getDecimalMask();
 				classificacaoVisual[3] = "Mascara (Binario): " + rede.getBinaryMask();
 				classificacaoVisual[4] = "Quantidade de ips disponiveis: " + rede.getAvaliableIps();
 
-				if (rede.errorMessage.equals("none")){ //Verificacao, se nao houve nenhum erro
-					listClassificacao.setListData(classificacaoVisual);
-					labelError.setText("");
-					
+				if (rede.getMask() > 24) {
+					fichasSubRede = new String[rede.getQuantSubRede() + 1][5];
+					// Criando uma lista de todas as redes
+					// o primeiro parâmetro vai ditar quantas redes, logo quantas fichas
+					// o segundo é só pra formatar a ficha, 1 titulo, 3 campos de valores, uma linha
+					// vazia
+
+					for (int i = 0; i < rede.getQuantSubRede(); i++) {
+						String[] ipSplit = rede.getIpSplit();
+						String ipMasked = String.format("%s.%s.%s.", ipSplit[0], ipSplit[1], ipSplit[2]);
+
+						int[] octetosDeRede = rede.getOctetosDeRede();
+						int[] octetosDeBroadcast = rede.getOctetosDeBroadcast();
+						int[] rangeStarts = rede.getRangeStarts();
+						int[] rangeEnds = rede.getRangeEnds();
+
+						fichasSubRede[i][0] = "SUB-REDE: " + (i + 1);
+						fichasSubRede[i][1] = "Endereço de rede: " + ipMasked + "" + octetosDeRede[i];
+						fichasSubRede[i][2] = "Endereço de broadcast: " + ipMasked + octetosDeBroadcast[i];
+						fichasSubRede[i][3] = "Range: " + ipMasked + rangeStarts[i] + " A " + ipMasked + rangeEnds[i];
+						fichasSubRede[i][4] = " ";
+
+					}
+					// Isso daqui é uma gambiarra feia, reorganizar depois, colocar num método,
+					// qualquer coisa
+					listFichas = new String[fichasSubRede.length * 5];
+					int k = 0;
+					for (int i = 0; i < fichasSubRede.length; i++) {
+						for (int j = 0; j < 5; j++) {
+							listFichas[k] = fichasSubRede[i][j];
+							k++;
+
+						}
+					}
+
 				}
-				else {
+
+				if (rede.errorMessage.equals("none")) { // Verificacao, se nao houve nenhum erro
+					listClassificacao.setListData(classificacaoVisual);
+					listDadosSubRede.setListData(listFichas);
+
+					labelError.setText("");
+
+				} else {
 					labelError.setText(rede.errorMessage);
 					listClassificacao.setListData(new String[1]);
+					listDadosSubRede.setListData(new String[1]);
 				}
 
 			}

@@ -6,16 +6,22 @@ public class Rede {
 	private int firstOctet;
 	private int mask;
 	private String[] ipSplit;
+	private int tamanhoSubRede;
 
+	
 	public String errorMessage = "none";
 
-	public Rede(String ip) { // Rotina de tratamento do input, extrai as informacoes relevantes e expõe erros
+	public Rede(String ip) { //Método construtor, 
 		setIp(ip); // Guardando o input inicial
-
-		
 		try {
 			extractMask();
 			splitIp();
+			tamanhoSubRede = (int) (Math.pow(2, 8 - (mask-24)));
+			//2^<bits disponíveis>
+				//<bits disponíveis> = 8-<Máscara do Octeto>
+				//<Máscara do Octeto> = mask-24
+			
+			//TODO esse tamanhoSubRede precisa ser ajustado ainda
 			
 		} catch (NumberFormatException exception) { //Previnindo input de letras
 			errorMessage = "Formato inválido";
@@ -72,6 +78,11 @@ public class Rede {
 			}
 		}
 	}
+	
+	public String[] getIpSplit(){
+		return ipSplit;
+		
+	}
 
 	public void extractMask() { // Separando máscara CIDR do ip, comparando se é um valor válido de CIDR
 		int maskIndex = (ip.indexOf("/") + 1);
@@ -79,6 +90,13 @@ public class Rede {
 		if ((mask < 0) || (mask > 32)) {
 			errorMessage = "CIDR inválido";
 		}
+	}
+	
+	public int getMask() {
+		return mask;
+	//TODO: Tem redundancia aqui, poderia trocar o ExtractMask pelo get, e substituir toda
+	//vez que chamam essa máscara, fica aí melhoria
+		
 	}
 
 	// get do ip
@@ -152,4 +170,84 @@ public class Rede {
 		double avaliableIps = Math.pow(2.0, (32 - mask));
 		return ((int) avaliableIps - 2);
 	}
+	
+	/*
+	*ULTIMA SPRINT: Fazer aqui as últimas funcionalidades para classificação de sub-redes acima
+	*de 24, as funcionalidades:
+	*
+	*-Ips de rede e Broadcasts
+	*-Range de ips disponíveis para host
+	*
+	*Brainstorm:
+	*
+	*Variáveis que vou precisar, exemplo CIDR 26
+	*	quantSubRedes : pra saber quantos loops rodar, nesse caso, 4
+	*	octetosDeRede: que vai ser o 0 e 64 //rede é sempre os redondinho
+	*	octetosDeBroadcast: que vai ser o 63, 127, 191, 255 //broadcast é os redondinho -1
+	*	octetosRangeStart: que vai ser o 1, 65, 129... //
+	*	octetosRangeEnd: que vai ser o 62, 
+	*
+	*
+	*Métodos
+	*	getQuantSubRedes
+	*	getOctetosDeRede
+	*	getOctetosDeBroadcast
+	*	getOctetoRangeStart
+	*	getOctetoRangeEnd
+	*	//Intuitivos, só vão extrair números com a máscara CIDR
+	*
+	*	displayIp(int octeto)	
+	*	//vai receber algum dos octetos e juntar com os outros octetos, 
+	*	pra poder estruturar certinho
+	*
+	*	
+	*	
+	*/
+	
+	public int getQuantSubRede() {
+		return (256/tamanhoSubRede);
+	}
+	
+	public int[] getOctetosDeRede() {
+		int[] octetosDeRede = new int[getQuantSubRede()];
+		
+		for  (int i = 0; i < octetosDeRede.length ; i++) {
+			octetosDeRede[i] = tamanhoSubRede*i;
+		}
+		
+		return octetosDeRede;
+	}
+
+	public int[] getOctetosDeBroadcast() {
+		int[] octetosDeBroadcast = new int[getQuantSubRede()];
+		
+		for (int i = 0; i < octetosDeBroadcast.length ; i++) {
+			octetosDeBroadcast[i] =(i*tamanhoSubRede) + (tamanhoSubRede-1);
+		}
+		
+		return octetosDeBroadcast;
+	}
+
+	public int[] getRangeStarts() {
+		int[] rangeStarts = new int[getQuantSubRede()];
+		
+		for (int i = 0; i < rangeStarts.length ; i++) {
+			rangeStarts[i] = (i*tamanhoSubRede) + 1;
+		}
+		
+		return rangeStarts;
+	}
+
+	public int[] getRangeEnds() {
+		int[] octetoRangeEnds = new int[getQuantSubRede()];
+		
+		for  (int i = 0; i < octetoRangeEnds.length ; i++) {
+			octetoRangeEnds[i] = (i*tamanhoSubRede) + (tamanhoSubRede-1);
+		}
+
+		return octetoRangeEnds;
+	}
 }
+
+	
+	
