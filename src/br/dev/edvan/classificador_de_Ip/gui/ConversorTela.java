@@ -111,7 +111,7 @@ public class ConversorTela {
 				classificacaoVisual[3] = "Mascara (Binario): " + rede.getBinaryMask();
 				classificacaoVisual[4] = "Quantidade de ips disponiveis: " + rede.getAvaliableIps();
 
-				if (rede.getMask() > 24) {
+				if (rede.getMask() > 24) { // Se for nossa premiada sub-rede lá
 					fichasSubRede = new String[rede.getQuantSubRede() + 1][6];
 					// Criando uma lista de todas as redes
 					// o primeiro parâmetro vai ditar quantas redes, logo quantas fichas
@@ -146,24 +146,30 @@ public class ConversorTela {
 
 						}
 					}
-					
+
 					if (rede.getMask() == 32) {
 						listFichas = new String[6];
-						
+
 						listFichas[0] = "SUB-REDE";
 						listFichas[1] = "Endereço de rede: " + rede.getIp();
 						listFichas[2] = "Endereço de broadcast: " + rede.getIp();
 						listFichas[3] = "Primeiro ip válido: N/A";
 						listFichas[4] = "Último ip válido: N/A";
 						listFichas[5] = " ";
-						
+
 					}
 
 				}
 
 				if (rede.errorMessage.equals("none")) { // Verificacao, se nao houve nenhum erro
 					listClassificacao.setListData(classificacaoVisual);
-					listDadosSubRede.setListData(listFichas);
+					if (rede.getMask() > 24) {
+						listDadosSubRede.setListData(listFichas);
+					}
+					else {
+						listDadosSubRede.setListData(new String[1]);
+						
+					}
 
 					labelError.setText("");
 
