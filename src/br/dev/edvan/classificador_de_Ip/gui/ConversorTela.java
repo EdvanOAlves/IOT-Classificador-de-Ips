@@ -70,13 +70,13 @@ public class ConversorTela {
 		// JList e ScrollPane que vai receber o output para as informações básicas
 		listClassificacao = new JList();
 		scrollClassificacao = new JScrollPane(listClassificacao);
-		scrollClassificacao.setBounds(20, 150, 395, 150);
+		scrollClassificacao.setBounds(20, 150, 395, 115);
 
 		// JList e ScrollPane Para dados de sub-Redes acima de 24 CIDR \o/
 
 		listDadosSubRede = new JList();
 		scrollDadosSubRede = new JScrollPane(listDadosSubRede);
-		scrollDadosSubRede.setBounds(20, 310, 395, 350);
+		scrollDadosSubRede.setBounds(20, 280, 395, 350);
 
 		// Adicionando elementos na janela
 		container.add(labelIp);
@@ -101,7 +101,7 @@ public class ConversorTela {
 				Rede rede = new Rede(ipCidr);
 
 				// Montagem do vetor para exibicao na tela
-				String[] classificacaoVisual = new String[5];
+				String[] classificacaoVisual = new String[6];
 				String[] listFichas = null;
 				String[][] fichasSubRede = null;
 
@@ -110,6 +110,8 @@ public class ConversorTela {
 				classificacaoVisual[2] = "Mascara (Decimal): " + rede.getDecimalMask();
 				classificacaoVisual[3] = "Mascara (Binario): " + rede.getBinaryMask();
 				classificacaoVisual[4] = "Quantidade de ips disponiveis: " + rede.getAvaliableIps();
+				classificacaoVisual[5] = "Número de Sub-Redes: 0";
+				
 
 				if (rede.getMask() > 24) { // Se for nossa premiada sub-rede lá
 					fichasSubRede = new String[rede.getQuantSubRede() + 1][6];
@@ -126,17 +128,19 @@ public class ConversorTela {
 						int[] octetosDeBroadcast = rede.getOctetosDeBroadcast();
 						int[] rangeStarts = rede.getRangeStarts();
 						int[] rangeEnds = rede.getRangeEnds();
+						
+						classificacaoVisual[5] = "Número de Sub-Redes: " + rede.getQuantSubRede();
 
 						fichasSubRede[i][0] = "SUB-REDE: " + (i + 1);
 						fichasSubRede[i][1] = "Endereço de rede: " + ipMasked + "" + octetosDeRede[i];
-						fichasSubRede[i][2] = "Endereço de broadcast: " + ipMasked + octetosDeBroadcast[i];
-						fichasSubRede[i][3] = "Primeiro ip válido: " + ipMasked + rangeStarts[i];
-						fichasSubRede[i][4] = "Último ip válido: " + ipMasked + rangeEnds[i];
+						fichasSubRede[i][2] = "Primeiro ip válido: " + ipMasked + rangeStarts[i];
+						fichasSubRede[i][3] = "Último ip válido: " + ipMasked + rangeEnds[i];
+						fichasSubRede[i][4] = "Endereço de broadcast: " + ipMasked + octetosDeBroadcast[i];
 						fichasSubRede[i][5] = " ";
 
 					}
-					// Isso daqui é uma gambiarra feia, reorganizar depois, colocar num método,
-					// qualquer coisa
+					// Isso daqui é uma gambiarra feia, reorganizar depois, colocar num método, enfim.
+					// 
 					listFichas = new String[fichasSubRede.length * fichasSubRede[0].length];
 					int k = 0;
 					for (int i = 0; i < fichasSubRede.length; i++) {
@@ -160,6 +164,25 @@ public class ConversorTela {
 					}
 
 				}
+				else { //Pra montar a nossa ficha em CIDR abaixo de 25
+					int[] octetosDeRede = rede.getOctetosDeRede();
+					int[] octetosDeBroadcast = rede.getOctetosDeBroadcast();
+					int[] rangeStarts = rede.getRangeStarts();
+					int[] rangeEnds = rede.getRangeEnds();
+					
+					String[] ipSplit = rede.getIpSplit();
+					String ipMasked = String.format("%s.%s.%s.", ipSplit[0], ipSplit[1], ipSplit[2]);
+					//TODO: Essas variáveis podem ficar fora do else, não esperava que ia precisar delas sem o CIDR 25
+					
+					listFichas = new String[6];
+					listFichas[0] = "REDE";
+					listFichas[1] = "Endereço de rede: " + ipMasked +octetosDeRede[0];
+					listFichas[2] = "Endereço de broadcast: " + ipMasked+octetosDeBroadcast[0];
+					listFichas[3] = "Primeiro ip válido: "+ ipMasked+octetosDeRede[0]+1;
+					listFichas[4] = "Último ip válido: "+ ipMasked+(octetosDeBroadcast[0]-1);
+					listFichas[5] = " ";
+					
+				}
 
 				if (rede.errorMessage.equals("none")) { // Verificacao, se nao houve nenhum erro
 					listClassificacao.setListData(classificacaoVisual);
@@ -167,7 +190,7 @@ public class ConversorTela {
 						listDadosSubRede.setListData(listFichas);
 					}
 					else {
-						listDadosSubRede.setListData(new String[1]);
+						listDadosSubRede.setListData(listFichas);
 						
 					}
 

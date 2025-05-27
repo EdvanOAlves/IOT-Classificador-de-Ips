@@ -20,11 +20,7 @@ public class Rede {
 			extractMask();
 			splitIp();
 			tamanhoSubRede = (int) (Math.pow(2, 8 - (mask-24)));
-			getQuantSubRede();
-			getOctetosDeRede();
-			getOctetosDeBroadcast();
-			getRangeStarts();
-			getRangeEnds();
+
 			//2^<bits disponíveis>
 				//<bits disponíveis> = 8-<Máscara do Octeto>
 				//<Máscara do Octeto> = mask-24

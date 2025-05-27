@@ -14,6 +14,7 @@ public class Main {
 //TODO:
     	//Os nomes das variáveis e metodos em Rede tá uma bagunça, português, inglês, depois fazer uma operação de refactor
     	//Do jeito que eu fiz para subredes em classe C ele quebrou o diagnostico de erros, consertar depois
+    	
     }
 
 }
