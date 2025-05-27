@@ -7,6 +7,9 @@ public class Rede {
 	private int mask;
 	private String[] ipSplit;
 	private int tamanhoSubRede;
+	
+	int[] rangeStarts;
+	int[] rangeEnds;
 
 	
 	public String errorMessage = "none";
@@ -229,7 +232,7 @@ public class Rede {
 	}
 
 	public int[] getRangeStarts() {
-		int[] rangeStarts = new int[getQuantSubRede()];
+		rangeStarts = new int[getQuantSubRede()];
 		
 		for (int i = 0; i < rangeStarts.length ; i++) {
 			rangeStarts[i] = (i*tamanhoSubRede) + 1;
@@ -239,15 +242,24 @@ public class Rede {
 	}
 
 	public int[] getRangeEnds() {
-		int[] octetoRangeEnds = new int[getQuantSubRede()];
+		rangeEnds = new int[getQuantSubRede()];
 		
-		for  (int i = 0; i < octetoRangeEnds.length ; i++) {
-			octetoRangeEnds[i] = (i*tamanhoSubRede) + (tamanhoSubRede-1);
+		for  (int i = 0; i < rangeEnds.length ; i++) {
+			rangeEnds[i] = (i*tamanhoSubRede) + (tamanhoSubRede-2);
+			if (rangeEnds[i] < rangeStarts[i]) {
+				rangeEnds[i] = rangeStarts[i];
+			}
 		}
 
-		return octetoRangeEnds;
+		return rangeEnds;
 	}
 }
 
 	
+
+
+
+
+
+
 	

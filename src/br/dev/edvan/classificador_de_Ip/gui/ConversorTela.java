@@ -112,7 +112,7 @@ public class ConversorTela {
 				classificacaoVisual[4] = "Quantidade de ips disponiveis: " + rede.getAvaliableIps();
 
 				if (rede.getMask() > 24) {
-					fichasSubRede = new String[rede.getQuantSubRede() + 1][5];
+					fichasSubRede = new String[rede.getQuantSubRede() + 1][6];
 					// Criando uma lista de todas as redes
 					// o primeiro parâmetro vai ditar quantas redes, logo quantas fichas
 					// o segundo é só pra formatar a ficha, 1 titulo, 3 campos de valores, uma linha
@@ -130,20 +130,33 @@ public class ConversorTela {
 						fichasSubRede[i][0] = "SUB-REDE: " + (i + 1);
 						fichasSubRede[i][1] = "Endereço de rede: " + ipMasked + "" + octetosDeRede[i];
 						fichasSubRede[i][2] = "Endereço de broadcast: " + ipMasked + octetosDeBroadcast[i];
-						fichasSubRede[i][3] = "Range: " + ipMasked + rangeStarts[i] + " A " + ipMasked + rangeEnds[i];
-						fichasSubRede[i][4] = " ";
+						fichasSubRede[i][3] = "Primeiro ip válido: " + ipMasked + rangeStarts[i];
+						fichasSubRede[i][4] = "Último ip válido: " + ipMasked + rangeEnds[i];
+						fichasSubRede[i][5] = " ";
 
 					}
 					// Isso daqui é uma gambiarra feia, reorganizar depois, colocar num método,
 					// qualquer coisa
-					listFichas = new String[fichasSubRede.length * 5];
+					listFichas = new String[fichasSubRede.length * fichasSubRede[0].length];
 					int k = 0;
 					for (int i = 0; i < fichasSubRede.length; i++) {
-						for (int j = 0; j < 5; j++) {
+						for (int j = 0; j < 6; j++) {
 							listFichas[k] = fichasSubRede[i][j];
 							k++;
 
 						}
+					}
+					
+					if (rede.getMask() == 32) {
+						listFichas = new String[6];
+						
+						listFichas[0] = "SUB-REDE";
+						listFichas[1] = "Endereço de rede: " + rede.getIp();
+						listFichas[2] = "Endereço de broadcast: " + rede.getIp();
+						listFichas[3] = "Primeiro ip válido: N/A";
+						listFichas[4] = "Último ip válido: N/A";
+						listFichas[5] = " ";
+						
 					}
 
 				}
