@@ -6,7 +6,6 @@ public class Rede {
 	private int firstOctet;
 	private int mask;
 	private String[] ipSplit;
-	private int tamanhoSubRede;
 
 	int[] rangeStarts;
 	int[] rangeEnds;
@@ -18,12 +17,7 @@ public class Rede {
 			setIp(ip); // Guardando o input inicial
 			extractMask();
 			splitIp();
-			tamanhoSubRede = (int) (Math.pow(2, 8 - (mask - 24)));
-			// 2^<bits disponíveis>
-			// <bits disponíveis> = 8-<Máscara do Octeto>
-			// <Máscara do Octeto> = mask-24
-
-			// TODO esse tamanhoSubRede precisa ser ajustado ainda
+			getTamanhoDeRede(); //Isso daqui é só pra ver se não dá parafuso
 
 		} catch (NumberFormatException exception) { // Previnindo input de letras
 			errorMessage = "Formato inválido";
@@ -57,13 +51,37 @@ public class Rede {
 		ipVerify();
 	}
 
-	public void extractMask() { // Separando máscara CIDR do ip, comparando se é um valor válido de CIDR
+	private void extractMask() { // Separando máscara CIDR do ip, comparando se é um valor válido de CIDR
 		int maskIndex = (ip.indexOf("/") + 1);
 		mask = Integer.parseInt(ip.substring(maskIndex));
 		checkCidr();
 	}
+	
+	public int getTamanhoDeRede() {
+		int brokenCidr = 0;
+		if (mask%8 == 0) {
+			brokenCidr= 8;
+		}
+		else if (mask >24) {
+			brokenCidr = mask-24;
+			
+		}
+		else if (mask >16) {
+			brokenCidr = mask -16;
+		}
+		else if (mask >8) {
+			brokenCidr = mask -8;
+		}
+		else {
+			brokenCidr = mask;
+		}
 
-	// VERIFICAÇÕES DE ERROS MANUALMENTE
+		return (int) (Math.pow(2, 8 - brokenCidr));
+		// 2^<bits disponíveis>
+		// 	 <bits disponíveis> = 8-<Máscara do Octeto>
+	}
+
+	// VERIFICAÇÕES DE ERROS MANUAIS
 	private void ipVerify() {
 		checkPeriods();
 		checkOctets();
@@ -111,7 +129,7 @@ public class Rede {
 		return mask;
 	}
 
-	// Gets de valores convertidos, públicos para acesso da interface gráfica
+	// Gets de valores convertidos, públicos para acesso da ficha que leva a interface Gráfica
 
 	public char getClasse() {
 		char ipClasse = 'z'; // Valor inicial alerta de falhas
@@ -152,13 +170,17 @@ public class Rede {
 		//TODO ips disponíveis no caso de sub-rede 25+ lá, ele precisa desconsiderar 
 		//os endereços de Rede e Broadcast imagino eu
 	}
+	
+	public String getErrorMessage() {
+		return errorMessage;
+	}
 
 	// Funções privadas para auxiliar os gets públicos:
 	private int[] extractDecimalMask() {
 		int[] splitDecimalMask = new int[4]; // Iniciando array
 
 		int maskRef = mask; // Fazendo uma referencia da mascara para não alterar o valor original
-		for (int i = 1; i <= 4; i++) { //Loop que vai montar o array de octetos
+		for (int i = 0; i < 4; i++) { //Loop que vai montar o array de octetos
 			if (maskRef == 0) {
 				splitDecimalMask[i] = 0;
 			} else if (maskRef > 0 && maskRef < 8) {
@@ -198,21 +220,25 @@ public class Rede {
 		return splitBinaryMask;
 	}
 	
-	//SUB-REDES
-	/* Então. Aqui é toda uma nova funcionalidade que não estava muito claro o que precisávamos fazer até
-	 * tudo acima ter sido resolvido. Por enquanto vai ser um trecho aqui de redes dedicado a isso
-	 * porque para o que foi pedido já atende. Fica o desafio caso um dia eu queira revisitar o ideal
-	 * seria criar uma nova subclasse
-	*/
+	/*
+	 * 
+	 * 			SUB-REDES 
+	 *(Aqui são métodos que foram criados para atender a demanda extra do professor de exibir
+	 *mais informações em caso de Sub-Redes com máscara CIDR acima de 24, se um dia eu decidir revisitar
+	 *esse programa vou reajustar para funcionar com as Sub-redes abaixo de CIDR 24)
+	 * 
+	 */
+
+	
 	public int getQuantSubRede() {
-		return (256 / tamanhoSubRede);
+		return (256 / getTamanhoDeRede());
 	}
 
 	public int[] getOctetosDeRede() {
 		int[] octetosDeRede = new int[getQuantSubRede()];
 
 		for (int i = 0; i < octetosDeRede.length; i++) {
-			octetosDeRede[i] = tamanhoSubRede * i;
+			octetosDeRede[i] = getTamanhoDeRede() * i;
 		}
 
 		return octetosDeRede;
@@ -222,7 +248,7 @@ public class Rede {
 		int[] octetosDeBroadcast = new int[getQuantSubRede()];
 
 		for (int i = 0; i < octetosDeBroadcast.length; i++) {
-			octetosDeBroadcast[i] = (i * tamanhoSubRede) + (tamanhoSubRede - 1);
+			octetosDeBroadcast[i] = (i * getTamanhoDeRede()) + (getTamanhoDeRede() - 1);
 		}
 
 		return octetosDeBroadcast;
@@ -232,17 +258,18 @@ public class Rede {
 		rangeStarts = new int[getQuantSubRede()];
 
 		for (int i = 0; i < rangeStarts.length; i++) {
-			rangeStarts[i] = (i * tamanhoSubRede) + 1;
+			rangeStarts[i] = (i * getTamanhoDeRede()) + 1;
 		}
 
 		return rangeStarts;
 	}
 
 	public int[] getRangeEnds() {
+		int tamanhoDeRede = getTamanhoDeRede();
 		rangeEnds = new int[getQuantSubRede()];
 
 		for (int i = 0; i < rangeEnds.length; i++) {
-			rangeEnds[i] = (i * tamanhoSubRede) + (tamanhoSubRede - 2);
+			rangeEnds[i] = (i * tamanhoDeRede) + (tamanhoDeRede - 2);
 			if (rangeEnds[i] < rangeStarts[i]) {
 				rangeEnds[i] = rangeStarts[i];
 			}
