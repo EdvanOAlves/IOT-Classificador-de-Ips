@@ -10,6 +10,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import br.dev.edvan.classificador_de_Ip.model.FichaDeRede;
 import br.dev.edvan.classificador_de_Ip.model.Rede;
 
 public class ConversorTela {
@@ -98,19 +99,15 @@ public class ConversorTela {
 			public void actionPerformed(ActionEvent e) {
 				// Passando os valores do campo e criando o objeto
 				String ipCidr = textIp.getText();
+				
+				
 				Rede rede = new Rede(ipCidr);
+				FichaDeRede ficha = new FichaDeRede(rede);
 
 				// Montagem do vetor para exibicao na tela
-				String[] classificacaoVisual = new String[6];
+				String[] classificacaoVisual = ficha.getClassificacaoVisual();
 				String[] listFichas = null;
 				String[][] fichasSubRede = null;
-
-				classificacaoVisual[0] = "ip: " + rede.getIp();
-				classificacaoVisual[1] = "Classe: " + rede.getClasse();
-				classificacaoVisual[2] = "Mascara (Decimal): " + rede.getDecimalMask();
-				classificacaoVisual[3] = "Mascara (Binario): " + rede.getBinaryMask();
-				classificacaoVisual[4] = "Quantidade de ips disponiveis: " + rede.getAvaliableIps();
-				classificacaoVisual[5] = "Número de Sub-Redes: 0";
 				
 
 				if (rede.getMask() > 24) { // Se for nossa premiada sub-rede lá
