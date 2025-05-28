@@ -7,9 +7,15 @@ public class FichaDeRede {
 	private String errorMessage;
 
 	public FichaDeRede(Rede rede) {
-		this.rede = rede;
-		makeFichas();
-		errorMessage = rede.getErrorMessage();
+		try {
+			this.rede = rede;
+			makeFichas();
+			errorMessage = rede.getErrorMessage();			
+		}
+		catch(Exception e) {
+			errorMessage = "Formato inválido";
+			e.printStackTrace();
+		}
 	}
 
 	// MAKE FICHAS, o método que vai decidir o tipo de fichas que vai fazer e como
