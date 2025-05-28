@@ -17,7 +17,7 @@ public class Rede {
 			setIp(ip); // Guardando o input inicial
 			extractMask();
 			splitIp();
-			getTamanhoDeRede(); //Isso daqui é só pra ver se não dá parafuso
+			getTamanhoDeRede(); // Isso daqui é só pra ver se não dá parafuso
 
 		} catch (NumberFormatException exception) { // Previnindo input de letras
 			errorMessage = "Formato inválido";
@@ -56,29 +56,25 @@ public class Rede {
 		mask = Integer.parseInt(ip.substring(maskIndex));
 		checkCidr();
 	}
-	
+
 	public int getTamanhoDeRede() {
 		int brokenCidr = 0;
-		if (mask%8 == 0) {
-			brokenCidr= 8;
-		}
-		else if (mask >24) {
-			brokenCidr = mask-24;
-			
-		}
-		else if (mask >16) {
-			brokenCidr = mask -16;
-		}
-		else if (mask >8) {
-			brokenCidr = mask -8;
-		}
-		else {
+		if (mask % 8 == 0) {
+
+		} else if (mask > 24) {
+			brokenCidr = mask - 24;
+
+		} else if (mask > 16) {
+			brokenCidr = mask - 16;
+		} else if (mask > 8) {
+			brokenCidr = mask - 8;
+		} else {
 			brokenCidr = mask;
 		}
 
 		return (int) (Math.pow(2, 8 - brokenCidr));
 		// 2^<bits disponíveis>
-		// 	 <bits disponíveis> = 8-<Máscara do Octeto>
+		// <bits disponíveis> = 8-<Máscara do Octeto>
 	}
 
 	// VERIFICAÇÕES DE ERROS MANUAIS
@@ -129,7 +125,8 @@ public class Rede {
 		return mask;
 	}
 
-	// Gets de valores convertidos, públicos para acesso da ficha que leva a interface Gráfica
+	// Gets de valores convertidos, públicos para acesso da ficha que leva a
+	// interface Gráfica
 
 	public char getClasse() {
 		char ipClasse = 'z'; // Valor inicial alerta de falhas
@@ -166,11 +163,11 @@ public class Rede {
 	public int getAvaliableIps() { // Calculando a quantidade de endereços disponíveis
 		double avaliableIps = Math.pow(2.0, (32 - mask));
 		return ((int) avaliableIps - 2);
-		
-		//TODO ips disponíveis no caso de sub-rede 25+ lá, ele precisa desconsiderar 
-		//os endereços de Rede e Broadcast imagino eu
+
+		// TODO ips disponíveis no caso de sub-rede 25+ lá, ele precisa desconsiderar
+		// os endereços de Rede e Broadcast imagino eu
 	}
-	
+
 	public String getErrorMessage() {
 		return errorMessage;
 	}
@@ -180,7 +177,7 @@ public class Rede {
 		int[] splitDecimalMask = new int[4]; // Iniciando array
 
 		int maskRef = mask; // Fazendo uma referencia da mascara para não alterar o valor original
-		for (int i = 0; i < 4; i++) { //Loop que vai montar o array de octetos
+		for (int i = 0; i < 4; i++) { // Loop que vai montar o array de octetos
 			if (maskRef == 0) {
 				splitDecimalMask[i] = 0;
 			} else if (maskRef > 0 && maskRef < 8) {
@@ -219,17 +216,16 @@ public class Rede {
 		}
 		return splitBinaryMask;
 	}
-	
+
 	/*
 	 * 
-	 * 			SUB-REDES 
-	 *(Aqui são métodos que foram criados para atender a demanda extra do professor de exibir
-	 *mais informações em caso de Sub-Redes com máscara CIDR acima de 24, se um dia eu decidir revisitar
-	 *esse programa vou reajustar para funcionar com as Sub-redes abaixo de CIDR 24)
+	 * SUB-REDES (Aqui são métodos que foram criados para atender a demanda extra do
+	 * professor de exibir mais informações em caso de Sub-Redes com máscara CIDR
+	 * acima de 24, se um dia eu decidir revisitar esse programa vou reajustar para
+	 * funcionar com as Sub-redes abaixo de CIDR 24)
 	 * 
 	 */
 
-	
 	public int getQuantSubRede() {
 		return (256 / getTamanhoDeRede());
 	}
@@ -277,4 +273,91 @@ public class Rede {
 
 		return rangeEnds;
 	}
+
+	// EXTRA: Detalhes de Sub Rede em Rede
+	// Mais uma funcionalidade, para exibir uma ficha para sem Sub-Redes
+
+	public String getNetIp() {
+		String[] netIp = ipSplit;
+		if (mask == 8) {
+			netIp[1] = "0";
+			netIp[2] = "0";
+			netIp[3] = "0";
+		}
+
+		else if (mask == 16) {
+			netIp[2] = "0";
+			netIp[3] = "0";
+		}
+
+		else if (mask == 24) {
+			netIp[3] = "0";
+		}
+
+		return netIp[0] + "." + netIp[1] + "." + netIp[2] + "." + netIp[3];
+	}
+
+	public String getBroadcastIp() {
+		String[] broadcastIp = ipSplit;
+		if (mask == 8) {
+			broadcastIp[1] = "0";
+			broadcastIp[2] = "0";
+			broadcastIp[3] = "0";
+		}
+
+		else if (mask == 16) {
+			broadcastIp[2] = "0";
+			broadcastIp[3] = "0";
+		}
+
+		else if (mask == 24) {
+			broadcastIp[3] = "0";
+		}
+
+		return broadcastIp[0] + "." + broadcastIp[1] + "." + broadcastIp[2] + "." + broadcastIp[3];
+	}
+
+
+	public String getHostStart() {
+		String[] hostStart = ipSplit;
+		if (mask == 8) {
+			hostStart[1] = "0";
+			hostStart[2] = "0";
+			hostStart[3] = "0";
+		}
+
+		else if (mask == 16) {
+			hostStart[2] = "0";
+			hostStart[3] = "0";
+		}
+
+		else if (mask == 24) {
+			hostStart[3] = "0";
+		}
+
+		return hostStart[0] + "." + hostStart[1] + "." + hostStart[2] + "." + hostStart[3];
+	}
+
+
+	public String getHostEnd() {
+		String[] hostEnd = ipSplit;
+		if (mask == 8) {
+			hostEnd[1] = "0";
+			hostEnd[2] = "0";
+			hostEnd[3] = "0";
+		}
+
+		else if (mask == 16) {
+			hostEnd[2] = "0";
+			hostEnd[3] = "0";
+		}
+
+		else if (mask == 24) {
+			hostEnd[3] = "0";
+		}
+
+		return hostEnd[0] + "." + hostEnd[1] + "." + hostEnd[2] + "." + hostEnd[3];
+
+	}
+
 }

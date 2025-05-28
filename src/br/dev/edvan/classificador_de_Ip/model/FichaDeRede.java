@@ -19,6 +19,7 @@ public class FichaDeRede {
 		if (rede.getMask() == 32) { // Caso CIDR 32, é uma exceção
 			profileRede = getClassificacaoVisualDeRede();
 			detailsRede = getFichaRede32();
+			
 		} else if (rede.getMask() % 8 == 0) { // Caso sem sub-rede
 			profileRede = getClassificacaoVisualDeRede();
 			detailsRede = getFichaRede();
@@ -31,7 +32,8 @@ public class FichaDeRede {
 
 		else { //Caso de Sub-rede com CIDR abaixo de 24
 			profileRede = getClassificacaoVisualDeSubRede();
-			// TODO Sub-redes abaixo de CIDR 24
+			detailsRede = new String[1];
+			
 		}
 
 	}
@@ -80,22 +82,12 @@ public class FichaDeRede {
 	public String[] getFichaRede() { // Sem Sub-Redes
 		String[] listFicha;
 
-		int[] octetosDeRede = rede.getOctetosDeRede();
-		int[] octetosDeBroadcast = rede.getOctetosDeBroadcast();
-		int[] rangeStarts = rede.getRangeStarts();
-		int[] rangeEnds = rede.getRangeEnds();
-
-		String[] ipSplit = rede.getIpSplit();
-		String ipMasked = String.format("%s.%s.%s.", ipSplit[0], ipSplit[1], ipSplit[2]);
-		// TODO: Essas variáveis podem ficar fora do else, não esperava que ia precisar
-		// delas sem o CIDR 25
-
 		listFicha = new String[6];
 		listFicha[0] = "REDE";
-		listFicha[1] = "Endereço de rede: " + ipMasked + octetosDeRede[0];
-		listFicha[2] = "Endereço de broadcast: " + ipMasked + octetosDeBroadcast[0];
-		listFicha[3] = "Primeiro ip válido: " + ipMasked + octetosDeRede[0] + 1;
-		listFicha[4] = "Último ip válido: " + ipMasked + (octetosDeBroadcast[0] - 1);
+		listFicha[1] = "Endereço de rede: " + rede.getNetIp();
+		listFicha[2] = "Primeiro ip válido: " + rede.getHostStart();
+		listFicha[3] = "Último ip válido: " + rede.getHostEnd();
+		listFicha[4] = "Endereço de broadcast: " + rede.getBroadcastIp();
 		listFicha[5] = " ";
 		
 		return listFicha;
