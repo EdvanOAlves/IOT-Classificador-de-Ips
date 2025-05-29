@@ -11,9 +11,10 @@ public class Main {
     	ConversorTela tela = new ConversorTela();
     	tela.criarTela("Classificador de Ips");
 
-//TODO:
+    	//TODO:
     	//Os nomes das variáveis e metodos em Rede tá uma bagunça, português, inglês, depois fazer uma operação de refactor
-    	//Do jeito que eu fiz para subredes em classe C ele quebrou o diagnostico de erros, consertar depois
+    	//Transferir todo o código de diagnóstico de erros para uma classe independente
+    	//Melhorar o funcionamento da interface gráfica, aceitar enter, retornar o foco para o campo de texto
     	
     }
 

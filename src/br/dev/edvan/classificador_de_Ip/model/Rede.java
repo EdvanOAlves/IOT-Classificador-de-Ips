@@ -6,33 +6,17 @@ public class Rede {
 	private int firstOctet;
 	private int mask;
 	private String[] ipSplit;
+	private String errorMessage;
 
 	int[] rangeStarts;
 	int[] rangeEnds;
 
-	public String errorMessage = "none";
+	// TODO ver tudo que usa errorMessage nessa classe e apagar, o tratamento de
+	// erros tá em outro lugar
 
 	public Rede(String ip) { // Método construtor,
-		try {
-			setIp(ip); // Guardando o input inicial
-			extractMask();
-			splitIp();
-			getTamanhoDeRede(); // Isso daqui é só pra ver se não dá parafuso
-
-		} catch (NumberFormatException exception) { // Previnindo input de letras
-			errorMessage = "Formato inválido";
-		} catch (StringIndexOutOfBoundsException exception) {
-			errorMessage = "Formato inválido";
-		} catch (NullPointerException exception) {
-			errorMessage = "Formato inválido";
-		} catch (Exception e) {
-			// Deixei esse aqui pra previnir tudo enquanto fica em aberto para em testes
-			// achar
-			// mais Exceções que façam sentido incluir no software
-			errorMessage = "Formato inválido e sem preparo";
-			e.printStackTrace();
-		}
-
+		setIp(ip); // Guardando o input inicial
+		splitIp(); //Separando o array de ips e coletando o CIDR
 	}
 
 	// Comandos usados no construtor
@@ -48,12 +32,7 @@ public class Rede {
 	private void splitIp() {
 		String ipIsolated[] = ip.split("/"); // Separando ip do CIDR
 		ipSplit = (ipIsolated[0]).split("\\."); // Separando ip por octetos
-		ipVerify();
-	}
-
-	private void extractMask() { // Separando máscara CIDR do ip, comparando se é um valor válido de CIDR
-		int maskIndex = (ip.indexOf("/") + 1);
-		mask = Integer.parseInt(ip.substring(maskIndex));
+		mask = Integer.parseInt(ipIsolated[1]);
 		checkCidr();
 	}
 
@@ -77,37 +56,6 @@ public class Rede {
 		// <bits disponíveis> = 8-<Máscara do Octeto>
 	}
 
-	// VERIFICAÇÕES DE ERROS MANUAIS
-	private void ipVerify() {
-		checkPeriods();
-		checkOctets();
-	}
-
-	private void checkPeriods() {
-		int periodCount = 0;
-		for (int i = 0; i < ip.length(); i++) { // Verificação do String
-			if (ip.charAt(i) == '.') { // contagem de pontos
-				periodCount++;
-			}
-		}
-		if (periodCount > 3 || periodCount < 3) { // Verificação, se a quantidade de pontos está adequadas
-			errorMessage = "Insira 4 octetos devidamente separados";
-		}
-	}
-
-	private void checkOctets() {
-		// Verificação de um dos bugs de octetos vazios
-		if (ipSplit.length < 4) { // Resolvendo bug de input "10.../25", octetos vazios basicamente
-			errorMessage = "Formato inválido, faltam valores de octetos";
-		}
-
-		// Verificando se tá no range de 0 e 255
-		for (int i = 0; i < ipSplit.length; i++) {
-			if (Integer.parseInt(ipSplit[i]) > 255 || Integer.parseInt(ipSplit[i]) < 0) {
-				errorMessage = "Formato inválido, octetos devem estar entre 0 e 255";
-			}
-		}
-	}
 
 	private void checkCidr() {
 		if ((mask < 0) || (mask > 32)) {
@@ -166,10 +114,6 @@ public class Rede {
 
 		// TODO ips disponíveis no caso de sub-rede 25+ lá, ele precisa desconsiderar
 		// os endereços de Rede e Broadcast imagino eu
-	}
-
-	public String getErrorMessage() {
-		return errorMessage;
 	}
 
 	// Funções privadas para auxiliar os gets públicos:
@@ -317,7 +261,6 @@ public class Rede {
 		return broadcastIp[0] + "." + broadcastIp[1] + "." + broadcastIp[2] + "." + broadcastIp[3];
 	}
 
-
 	public String getHostStart() {
 		String[] hostStart = ipSplit;
 		if (mask == 8) {
@@ -337,7 +280,6 @@ public class Rede {
 
 		return hostStart[0] + "." + hostStart[1] + "." + hostStart[2] + "." + hostStart[3];
 	}
-
 
 	public String getHostEnd() {
 		String[] hostEnd = ipSplit;

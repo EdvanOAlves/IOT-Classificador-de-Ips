@@ -6,16 +6,103 @@ public class FichaDeRede {
 	private String[] detailsRede;
 	private String errorMessage;
 
-	public FichaDeRede(Rede rede) {
-		try {
-			this.rede = rede;
+	public FichaDeRede(String ipCidr) {
+		errorMessage = "none";
+		checkInput(ipCidr); // Para fazer a verificação de erros antes da criação da rede
+		if (errorMessage.equals("none")) {
+			rede = new Rede(ipCidr);
+			checkRede(rede); // para fazer a verificação se é uma rede válida
 			makeFichas();
-			errorMessage = rede.getErrorMessage();			
 		}
-		catch(Exception e) {
-			errorMessage = "Formato inválido";
-			e.printStackTrace();
+	}
+
+	// Check input, só uma função para detectar os erros de input
+	// TODO: Montar uma classe pra fazer isso de maneira mais independente com
+	// funções mais organizadas
+	public void checkInput(String ipCidr) {
+
+		// Campo vazio? //
+		if (ipCidr.length() == 0) {
+			errorMessage = "Preencha o campo";
 		}
+
+		// Letras? //
+		for (char c : ipCidr.toCharArray()) {
+			if (Character.isLetter(c)) {
+				if (errorMessage.equals("none")) {
+					// Coloquei essa verificação em todos, só pra ter uma hierarquia nas mensagens
+					// de erro
+					errorMessage = "Formato inválido (contém letras)";
+				}
+			}
+		}
+
+		// Existencia de elementos chave (/ e .)
+		if ((ipCidr.indexOf("/")) == -1 || (ipCidr.indexOf(".")) == -1) {
+			if (errorMessage.equals("none")) {
+				errorMessage = "Formato inválido, siga o exemplo: (192.168.10.0/24)";
+			}
+
+		}
+
+		// Contagem de elementos chave //
+		if (!checkCharCount(ipCidr, '.', 3)) {
+			if (errorMessage.equals("none")) {
+				errorMessage = "Insira 4 octetos devidamente separados por 3 pontos(.)";
+			}
+		}
+		if (!checkCharCount(ipCidr, '/', 1)) {
+			if (errorMessage.equals("none")) {
+				errorMessage = "Insira uma máscara CIDR indicada por apenas uma barra (/)";
+			}
+		}
+		
+		//	Símbolos especiais	//
+		{
+			if (!ipCidr.matches("[0-9./]+$")){
+				if (errorMessage.equals("none")) {
+					errorMessage = "Insira apenas caracteres válidos (números, pontos e barra)";
+				}
+				
+			}
+		}
+		
+	}
+
+	public void checkRede(Rede rede) {
+		{ // Octetos vazios? //
+			if (rede.getIpSplit().length < 4) { // Resolvendo bug de input "10.../25", octetos vazios basicamente
+				errorMessage = "Formato inválido, faltam valores de octetos";
+			}
+		}
+		{// Verificando se tá no range de 0 e 255
+			for (int i = 0; i < rede.getIpSplit().length; i++) {
+				if (Integer.parseInt(rede.getIpSplit()[i]) > 255 || Integer.parseInt(rede.getIpSplit()[i]) < 0) {
+					errorMessage = "Formato inválido, octetos devem estar entre 0 e 255";
+				}
+			}
+		}
+
+	}
+
+	private boolean checkCharCount(String string, char targetChar, int expectedAmmount) {
+		// Função para verificar a contagem de algum caracter específico
+		// Recebe um String a verificar, um char pra fazer a contagem e qual seria a
+		// quantidade certa
+		// desse char no String, retorna true se estiver tudo certo, false se estiver
+		// tudo errado
+		int charCount = 0;
+		for (int i = 0; i < string.length(); i++) { // Verificação do String
+			if (string.charAt(i) == targetChar) { // contagem de pontos
+				charCount++;
+			}
+		}
+		if (charCount != expectedAmmount) {
+			return false;
+		} else {
+			return true;
+		}
+
 	}
 
 	// MAKE FICHAS, o método que vai decidir o tipo de fichas que vai fazer e como
@@ -25,7 +112,7 @@ public class FichaDeRede {
 		if (rede.getMask() == 32) { // Caso CIDR 32, é uma exceção
 			profileRede = getClassificacaoVisualDeRede();
 			detailsRede = getFichaRede32();
-			
+
 		} else if (rede.getMask() % 8 == 0) { // Caso sem sub-rede
 			profileRede = getClassificacaoVisualDeRede();
 			detailsRede = getFichaRede();
@@ -36,10 +123,10 @@ public class FichaDeRede {
 			detailsRede = getFichasSubRedeC();
 		}
 
-		else { //Caso de Sub-rede com CIDR abaixo de 24
+		else { // Caso de Sub-rede com CIDR abaixo de 24
 			profileRede = getClassificacaoVisualDeSubRede();
 			detailsRede = new String[1];
-			
+
 		}
 
 	}
@@ -95,7 +182,7 @@ public class FichaDeRede {
 		listFicha[3] = "Último ip válido: " + rede.getHostEnd();
 		listFicha[4] = "Endereço de broadcast: " + rede.getBroadcastIp();
 		listFicha[5] = " ";
-		
+
 		return listFicha;
 	}
 
@@ -160,6 +247,3 @@ public class FichaDeRede {
 
 	}
 }
-
-
-

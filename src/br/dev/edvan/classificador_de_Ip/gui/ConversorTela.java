@@ -99,30 +99,30 @@ public class ConversorTela {
 			public void actionPerformed(ActionEvent e) {
 				// Passando os valores do campo e criando o objeto
 				String ipCidr = textIp.getText();
-				
-				
-				Rede rede = new Rede(ipCidr);
-				FichaDeRede ficha = new FichaDeRede(rede);
-						
-				
 
-				if (ficha.getErrorMessage().equals("none")) { // Verificacao, se nao houve nenhum erro
-					listClassificacao.setListData(ficha.getProfileRede());
-					listDetails.setListData(ficha.getDetailsRede());	
-					labelError.setText("");
-				}else {
-					labelError.setText(ficha.getErrorMessage());
+				FichaDeRede ficha = new FichaDeRede(ipCidr);
 
-					listClassificacao.setListData(new String[1]);
-					listDetails.setListData(new String[1]);
-				}
+				displayResults(ficha);
+
 			}
 
-			
 		});
 
-	// tornando a tela visivel
-	tela.setVisible(true);
-}
+		// tornando a tela visivel
+		tela.setVisible(true);
+	}
 
+	private void displayResults(FichaDeRede ficha) {
+		if (ficha.getErrorMessage().equals("none")) { // Verificacao, se nao houve nenhum erro
+			listClassificacao.setListData(ficha.getProfileRede());
+			listDetails.setListData(ficha.getDetailsRede());
+			labelError.setText("");
+		} else {
+			labelError.setText(ficha.getErrorMessage());
+
+			listClassificacao.setListData(new String[1]);
+			listDetails.setListData(new String[1]);
+		}
+
+	}
 }
