@@ -12,13 +12,13 @@ public class FichaDeRede {
 		if (errorMessage.equals("none")) {
 			rede = new Rede(ipCidr);
 			checkRede(rede); // para fazer a verificação se é uma rede válida
-			makeFichas();
+			if (errorMessage.equals("none")) {
+				makeFichas();				
+			}
 		}
 	}
 
 	// Check input, só uma função para detectar os erros de input
-	// TODO: Montar uma classe pra fazer isso de maneira mais independente com
-	// funções mais organizadas
 	public void checkInput(String ipCidr) {
 
 		// Campo vazio? //
@@ -69,7 +69,16 @@ public class FichaDeRede {
 		
 	}
 
-	public void checkRede(Rede rede) {
+	public void checkRede(Rede rede) { 
+		//Verificações mais específicas, não é tanto input inválido mas sim as brechas que só quebram
+		//com funções da rede
+		
+		{ // Máscara vazia?
+			if (rede.getIpIsolated().length < 2) {
+				errorMessage = "Insira um valor de máscara";
+			}
+			
+		}
 		{ // Octetos vazios? //
 			if (rede.getIpSplit().length < 4) { // Resolvendo bug de input "10.../25", octetos vazios basicamente
 				errorMessage = "Formato inválido, faltam valores de octetos";
@@ -81,6 +90,14 @@ public class FichaDeRede {
 					errorMessage = "Formato inválido, octetos devem estar entre 0 e 255";
 				}
 			}
+		}
+		
+		
+		{// Verificando se a máscara é válida
+			if ((rede.getMask() < 0) || (rede.getMask() > 32)) {
+				errorMessage = "O CIDR deve estar entre 0 e 32";
+			}
+			
 		}
 
 	}

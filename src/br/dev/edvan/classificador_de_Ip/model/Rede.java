@@ -5,21 +5,33 @@ public class Rede {
 	private int octetLenght;
 	private int firstOctet;
 	private int mask;
+	private String[] ipIsolated = new String[2];
 	private String[] ipSplit;
-	private String errorMessage;
 
 	int[] rangeStarts;
 	int[] rangeEnds;
 
-	// TODO ver tudo que usa errorMessage nessa classe e apagar, o tratamento de
-	// erros tá em outro lugar
-
 	public Rede(String ip) { // Método construtor,
 		setIp(ip); // Guardando o input inicial
-		splitIp(); //Separando o array de ips e coletando o CIDR
+		isolateIp(); //
+		splitIp(); // Separando o array de ips
 	}
 
-	// Comandos usados no construtor
+	private void isolateIp() {
+		ipIsolated = ip.split("/"); // Separando ip do CIDR
+	}
+
+	private void splitIp() {
+		if (ipIsolated.length < 2) {
+			ipIsolated = new String[]{ipIsolated[0], "-1"}; // Caso o CIDR esteja vazio, isso encaminha pro erro certo
+		}
+		ipSplit = (ipIsolated[0]).split("\\."); // Separando ip por octetos
+		mask = Integer.parseInt(ipIsolated[1]);
+
+	}
+
+	// GETS E SETS
+
 	private void setIp(String ip) {
 		this.ip = ip;
 	}
@@ -29,11 +41,9 @@ public class Rede {
 		return ip;
 	}
 
-	private void splitIp() {
-		String ipIsolated[] = ip.split("/"); // Separando ip do CIDR
-		ipSplit = (ipIsolated[0]).split("\\."); // Separando ip por octetos
-		mask = Integer.parseInt(ipIsolated[1]);
-		checkCidr();
+	public String[] getIpIsolated() {
+		// get do ip separado entre endereço e CIDR
+		return ipIsolated;
 	}
 
 	public int getTamanhoDeRede() {
@@ -55,15 +65,6 @@ public class Rede {
 		// 2^<bits disponíveis>
 		// <bits disponíveis> = 8-<Máscara do Octeto>
 	}
-
-
-	private void checkCidr() {
-		if ((mask < 0) || (mask > 32)) {
-			errorMessage = "CIDR inválido";
-		}
-	}
-
-	// GETS E SETS
 
 	public String[] getIpSplit() {
 		return ipSplit;

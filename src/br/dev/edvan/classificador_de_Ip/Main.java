@@ -12,10 +12,11 @@ public class Main {
     	tela.criarTela("Classificador de Ips");
 
     	//TODO:
-    	//Os nomes das variáveis e metodos em Rede tá uma bagunça, português, inglês, depois fazer uma operação de refactor
-    	//Transferir todo o código de diagnóstico de erros para uma classe independente
-    	//Melhorar o funcionamento da interface gráfica, aceitar enter, retornar o foco para o campo de texto
-    	
+    	// Os nomes das variáveis e metodos em Rede tá uma bagunça, português, inglês, depois fazer uma operação de refactor
+    	// detailsRede ainda não está funcionando 100% para sem Sub-Redes
+    	// Transferir todo o código do checkInput e checkRede para o ExceptionCatcher e criar funções adequadas
+    	// Melhorar o funcionamento da interface gráfica, aceitar enter, retornar o foco para o campo de texto
+
     }
 
 }
