@@ -220,7 +220,14 @@ public class Rede {
 	}
 
 	// EXTRA: Detalhes de Sub Rede em Rede
-	// Mais uma funcionalidade, para exibir uma ficha para sem Sub-Redes
+	/* 
+	 * TODO: Tem bastante redundância aqui que poderia receber uma reordenada para deixar o código mais limpo:
+	 * hostStart[3] é netIp[3] +1, hostEnd[3] é broadCastIp[3]-1. Todos preenchem os outros octetos de
+	 * acordo com a máscara. Dá pra fazer uma função que lida com a parte mascarada e passa para essas
+	 * outras funções alterarem só o último octeto. 
+	 * Por enquanto vou deixar a redundância porque já faz o que eu preciso
+	 * 
+	 */
 
 	public String getNetIp() {
 		String[] netIp = ipSplit;
@@ -242,65 +249,39 @@ public class Rede {
 		return netIp[0] + "." + netIp[1] + "." + netIp[2] + "." + netIp[3];
 	}
 
-	public String getBroadcastIp() {
-		String[] broadcastIp = ipSplit;
-		if (mask == 8) {
-			broadcastIp[1] = "0";
-			broadcastIp[2] = "0";
-			broadcastIp[3] = "0";
-		}
-
-		else if (mask == 16) {
-			broadcastIp[2] = "0";
-			broadcastIp[3] = "0";
-		}
-
-		else if (mask == 24) {
-			broadcastIp[3] = "0";
-		}
-
-		return broadcastIp[0] + "." + broadcastIp[1] + "." + broadcastIp[2] + "." + broadcastIp[3];
-	}
-
 	public String getHostStart() {
 		String[] hostStart = ipSplit;
-		if (mask == 8) {
-			hostStart[1] = "0";
-			hostStart[2] = "0";
-			hostStart[3] = "0";
+		
+		for (int i = mask/8; !(i == 4) ; i++) { //For loop para zerar todos os octetos não mascarados
+			hostStart[i] = "0";
 		}
 
-		else if (mask == 16) {
-			hostStart[2] = "0";
-			hostStart[3] = "0";
-		}
-
-		else if (mask == 24) {
-			hostStart[3] = "0";
-		}
+		hostStart[3] = "1"; // O primeiro ip válido vai ter sempre 1 no ultimo octeto
 
 		return hostStart[0] + "." + hostStart[1] + "." + hostStart[2] + "." + hostStart[3];
 	}
 
 	public String getHostEnd() {
 		String[] hostEnd = ipSplit;
-		if (mask == 8) {
-			hostEnd[1] = "0";
-			hostEnd[2] = "0";
-			hostEnd[3] = "0";
+		
+		for (int i = mask/8; !(i == 4) ; i++) { //For loop para zerar todos os octetos não mascarados
+			hostEnd[i] = "255";
 		}
-
-		else if (mask == 16) {
-			hostEnd[2] = "0";
-			hostEnd[3] = "0";
-		}
-
-		else if (mask == 24) {
-			hostEnd[3] = "0";
-		}
+		
+		hostEnd[3] = "254"; // O ultimo ip válido vai ter sempre 254 no ultimo octeto
 
 		return hostEnd[0] + "." + hostEnd[1] + "." + hostEnd[2] + "." + hostEnd[3];
 
+	}
+	
+	public String getBroadcastIp() {
+		String[] broadcastIp = ipSplit;
+		
+		for (int i = mask/8; !(i == 4) ; i++) { //For loop para zerar todos os octetos não mascarados
+			broadcastIp[i] = "255";
+		}
+		
+		return broadcastIp[0] + "." + broadcastIp[1] + "." + broadcastIp[2] + "." + broadcastIp[3];
 	}
 
 }

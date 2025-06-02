@@ -73,7 +73,7 @@ public class ConversorTela {
 		scrollClassificacao = new JScrollPane(listClassificacao);
 		scrollClassificacao.setBounds(20, 150, 395, 115);
 
-		// JList e ScrollPane Para dados de sub-Redes acima de 24 CIDR \o/
+		// JList e ScrollPane Para dados de sub-Redes acima de 24 CIDR
 
 		listDetails = new JList();
 		scrollDadosSubRede = new JScrollPane(listDetails);
@@ -92,8 +92,11 @@ public class ConversorTela {
 
 		container.add(scrollDadosSubRede);
 
+		// tornando a tela visivel
+		tela.setVisible(true);
+		
 		// Adicionando ouvintes de acao ao botao
-		buttonClassificar.addActionListener(new ActionListener() { // Funcionamento do bot�o Calcular
+		buttonClassificar.addActionListener(new ActionListener() { // Funcionamento do botao Calcular
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -107,9 +110,6 @@ public class ConversorTela {
 			}
 
 		});
-
-		// tornando a tela visivel
-		tela.setVisible(true);
 	}
 
 	private void displayResults(FichaDeRede ficha) {

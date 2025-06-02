@@ -126,7 +126,7 @@ public class FichaDeRede {
 	// fazer, diferenciar se é sub-rede, etc.
 	//
 	private void makeFichas() {
-		if (rede.getMask() == 32) { // Caso CIDR 32, é uma exceção
+		if (rede.getMask() == 32) { // Caso CIDR 32, é um caso único
 			profileRede = getClassificacaoVisualDeRede();
 			detailsRede = getFichaRede32();
 
@@ -208,7 +208,7 @@ public class FichaDeRede {
 		// Para fazer as fichas de várias subredes fiz um array de arrays
 		// (buildFichasRedeC)
 		// Esse método chama essa função e converte pra um array único, pro ListPane
-		// aceitar
+		// aceitar (listFichas)
 
 		String[][] fichasSubRedeC = buildFichasSubRedeC();
 		String[] listFichas = new String[fichasSubRedeC.length * fichasSubRedeC[0].length];
@@ -217,7 +217,6 @@ public class FichaDeRede {
 			for (int j = 0; j < 6; j++) {
 				listFichas[k] = fichasSubRedeC[i][j];
 				k++;
-
 			}
 		}
 		return listFichas;

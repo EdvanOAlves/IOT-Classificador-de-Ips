@@ -13,10 +13,9 @@ public class Main {
 
     	//TODO:
     	// Os nomes das variáveis e metodos em Rede tá uma bagunça, português, inglês, depois fazer uma operação de refactor
-    	// detailsRede ainda não está funcionando 100% para sem Sub-Redes
-    	// Transferir todo o código do checkInput e checkRede para o ExceptionCatcher e criar funções adequadas
+    	// Transferir todo o código do checkInput e checkRede para o ExceptionCatcher. Criar funções adequadas
     	// Melhorar o funcionamento da interface gráfica, aceitar enter, retornar o foco para o campo de texto
-
+    	// Detalhes de Sub Rede em Rede tem bastante redundância, inclui as anotações lá
     }
 
 }
