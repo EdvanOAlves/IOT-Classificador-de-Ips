@@ -3,6 +3,9 @@ package br.dev.edvan.classificador_de_Ip.gui;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -95,28 +98,31 @@ public class ConversorTela {
 
 		// tornando a tela visivel
 		tela.setVisible(true);
-		
+
 		// Adicionando ouvintes de acao ao botao
 		buttonClassificar.addActionListener(new ActionListener() { // Funcionamento do botao Calcular
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Passando os valores do campo e criando o objeto
-				String ipCidr = textIp.getText();
-				
-				String inputErrorMessage =  RedeChecker.checkInput(ipCidr);
-				if (inputErrorMessage.equals("none")) {
-					FichaDeRede ficha = new FichaDeRede(ipCidr);					
-					displayResults(ficha);
-				}
-				else {
-					displayErrorMessage(inputErrorMessage);
-				}
-
-
+				runMethods();
+				textIp.requestFocus();
 			}
 
 		});
+	}
+
+	private void runMethods() {
+		// Passando os valores do campo e criando o objeto
+		String ipCidr = textIp.getText();
+
+		String inputErrorMessage = RedeChecker.checkInput(ipCidr);
+		if (inputErrorMessage.equals("none")) {
+			FichaDeRede ficha = new FichaDeRede(ipCidr);
+			displayResults(ficha);
+		} else {
+			displayErrorMessage(inputErrorMessage);
+		}
+
 	}
 
 	private void displayResults(FichaDeRede ficha) {
@@ -129,11 +135,11 @@ public class ConversorTela {
 		}
 
 	}
-	
+
 	private void displayErrorMessage(String errorMessage) {
 		labelError.setText(errorMessage);
 		listClassificacao.setListData(new String[1]);
 		listDetails.setListData(new String[1]);
-		
+
 	}
 }

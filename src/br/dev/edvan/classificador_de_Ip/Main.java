@@ -13,7 +13,7 @@ public class Main {
 
     	//TODO:
     	// Os nomes das variáveis e metodos em Rede tá uma bagunça, português, inglês, depois fazer uma operação de refactor
-    	// Melhorar o funcionamento da interface gráfica, aceitar enter, retornar o foco para o campo de texto
+    	// Melhorar o funcionamento da interface gráfica, no momento tab e espaço funciona fluído, mas seria interessante aceitar enter também
     	// Detalhes de Sub Rede em Rede tem bastante redundância, inclui anotações explicando, só pesquisar "Detalhes de Sub Rede em Rede" na classe Rede
     }
 
