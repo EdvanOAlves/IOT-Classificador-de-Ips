@@ -1,18 +1,20 @@
 package br.dev.edvan.classificador_de_Ip.model;
 
+import java.util.ArrayList;
+
 import br.dev.edvan.classificador_de_Ip.utils.RedeChecker;
 
 public class FichaDeRede {
 	Rede rede;
 	private String[] profileRede;
 	private String[] detailsRede;
-	private String errorMessage;
+	private ArrayList<String> errorMessages;
 
 	public FichaDeRede(String ipCidr) {
 		rede = new Rede(ipCidr);
 
-		errorMessage = RedeChecker.checkRede(rede);
-		if (errorMessage.equals("none")) {
+		errorMessages = RedeChecker.checkRede(rede);
+		if (errorMessages.getFirst().equals("none")) {
 			makeFichas();
 		}
 	}
@@ -52,8 +54,8 @@ public class FichaDeRede {
 		return detailsRede;
 	}
 
-	public String getErrorMessage() {
-		return errorMessage;
+	public ArrayList<String> getErrorMessages() {
+		return errorMessages;
 	}
 
 	// CONSTRUÇÃO PRIMEIRA AREA

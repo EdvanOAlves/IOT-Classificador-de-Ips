@@ -1,10 +1,12 @@
 package br.dev.edvan.classificador_de_Ip.gui;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -59,7 +61,9 @@ public class ConversorTela {
 		labelIp.setBounds(20, 20, 150, 30);
 
 		labelError = new JLabel();
-		labelError.setBounds(20, 115, 385, 30);
+		labelError.setBounds(20, 120, 385, 30);
+		labelError.setForeground(Color.red);
+		
 
 		// Text field para input
 		textIp = new JTextField();
@@ -115,8 +119,8 @@ public class ConversorTela {
 		// Passando os valores do campo e criando o objeto
 		String ipCidr = textIp.getText();
 
-		String inputErrorMessage = RedeChecker.checkInput(ipCidr);
-		if (inputErrorMessage.equals("none")) {
+		ArrayList<String> inputErrorMessage = RedeChecker.checkInput(ipCidr);
+		if (inputErrorMessage.getFirst().equals("none")) {
 			FichaDeRede ficha = new FichaDeRede(ipCidr);
 			displayResults(ficha);
 		} else {
@@ -126,20 +130,27 @@ public class ConversorTela {
 	}
 
 	private void displayResults(FichaDeRede ficha) {
-		if (ficha.getErrorMessage().equals("none")) { // Verificacao, se nao houve nenhum erro
+		if (ficha.getErrorMessages().getFirst().equals("none")) { // Verificacao, se nao houve nenhum erro
+			listClassificacao.setForeground(Color.black);
 			listClassificacao.setListData(ficha.getProfileRede());
 			listDetails.setListData(ficha.getDetailsRede());
 			labelError.setText("");
 		} else {
-			displayErrorMessage(ficha.getErrorMessage());
+			displayErrorMessage(ficha.getErrorMessages());
 		}
 
 	}
 
-	private void displayErrorMessage(String errorMessage) {
-		labelError.setText(errorMessage);
-		listClassificacao.setListData(new String[1]);
+	private void displayErrorMessage(ArrayList<String> inputErrorMessage) {
+		String[] errorMessage = new String[inputErrorMessage.size()];
+		for (int i = 0; i< errorMessage.length ; i++) {
+			errorMessage[i] = inputErrorMessage.get(i);
+		}
+		
+		labelError.setText("Erros encontrados:");
 		listDetails.setListData(new String[1]);
+		listClassificacao.setForeground(Color.red);
+		listClassificacao.setListData(errorMessage);
 
 	}
 }

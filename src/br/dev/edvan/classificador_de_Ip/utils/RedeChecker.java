@@ -6,36 +6,34 @@ import br.dev.edvan.classificador_de_Ip.model.Rede;
 
 public class RedeChecker {
 
-	public static String checkInput(String ipCidr) {
+	public static ArrayList<String> checkInput(String ipCidr) {
 		ArrayList<String> errorMessages = new ArrayList<>();
 
 		if (isEmpty(ipCidr)) {
-			errorMessages.add("Preencha o campo");
+			errorMessages.add("Campo vazio");
 		}
 
 		if (hasLetters(ipCidr)) {
-			errorMessages.add("Formato inválido (contém letras)");
+			errorMessages.add("Caracteres inválidos (contém letras)");
 		}
 
 		if (!checkCharCount(ipCidr, '.', 3)) {
-			errorMessages.add("Insira 4 octetos devidamente separados por 3 pontos(.)");
+			errorMessages.add("Octetos não estão devidamente separados por 3 pontos(.)");
 		}
 
 		if (!checkCharCount(ipCidr, '/', 1)) {
-			errorMessages.add("Insira uma máscara CIDR indicada por apenas uma barra (/)");
+			errorMessages.add("Máscara CIDR não está devidamente indicada por uma barra (/)");
 			
 		}
 
 		if (hasInvalidChars(ipCidr)) {
-			errorMessages.add("Insira apenas caracteres válidos (números, pontos e barra)");
+			errorMessages.add("Caracteres inválidos detectados (Símbolos especiais)");
 		}
 
-		errorMessages.add("none");
-		return errorMessages.getFirst();
-		// TODO: No momento isso retorna uma lista de erros mas pro nosso programa só o primeiro importa.
-		// poderia ser um return do String ao invés do errorMessages.add em cada checagem, mas dessa 
-		// forma fica em aberto para implementar a funcionalidade de retornar uma lista com todos os 
-		// erros detectados para o usuário
+		if (errorMessages.size() == 0) {
+			errorMessages.add("none");
+		}
+		return errorMessages;
 	}
 
 	private static boolean isEmpty(String ipCidr) {
@@ -56,28 +54,30 @@ public class RedeChecker {
 	}
 
 	// Para verificar redes impossíveis
-	public static String checkRede(Rede rede) {
+	public static ArrayList<String> checkRede(Rede rede) {
 		ArrayList<String> errorMessages = new ArrayList<>();
 
 		if (isEmptyMask(rede)) {
-			errorMessages.add("Preencha o campo");
+			errorMessages.add("Máscara vazia");
 		}
 
 		if (hasEmptyOctets(rede)) {
-			errorMessages.add("Formato inválido, faltam valores de octetos");
+			errorMessages.add("Faltam valores de octetos");
 
 		}
 
 		if (hasOutOfRangeOctets(rede)) {
-			errorMessages.add("Formato inválido, octetos devem estar entre 0 e 255");
+			errorMessages.add("Existe um ou mais octetos além do limite (0 a 255)");
 		}
 
 		if (hasInvalidMask(rede)) {
-			errorMessages.add("A máscara CIDR deve estar entre 0 e 32");
+			errorMessages.add("Máscara CIDR além do limite (0 a 32)");
 		}
 		
-		errorMessages.add("none");
-		return errorMessages.getFirst();
+		if (errorMessages.size() == 0) {
+			errorMessages.add("none");
+		}
+		return errorMessages;
 
 	}
 
