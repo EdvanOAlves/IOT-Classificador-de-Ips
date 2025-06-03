@@ -37,13 +37,7 @@ public class FichaDeRede {
 			}
 		}
 
-		// Existencia de elementos chave (/ e .)
-		if ((ipCidr.indexOf("/")) == -1 || (ipCidr.indexOf(".")) == -1) {
-			if (errorMessage.equals("none")) {
-				errorMessage = "Formato inválido, siga o exemplo: (192.168.10.0/24)";
-			}
 
-		}
 
 		// Contagem de elementos chave //
 		if (!checkCharCount(ipCidr, '.', 3)) {
@@ -95,7 +89,7 @@ public class FichaDeRede {
 		
 		{// Verificando se a máscara é válida
 			if ((rede.getMask() < 0) || (rede.getMask() > 32)) {
-				errorMessage = "O CIDR deve estar entre 0 e 32";
+				errorMessage = "A máscara CIDR deve estar entre 0 e 32";
 			}
 			
 		}
