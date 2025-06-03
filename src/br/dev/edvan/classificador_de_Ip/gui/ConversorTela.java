@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 
 import br.dev.edvan.classificador_de_Ip.model.FichaDeRede;
 import br.dev.edvan.classificador_de_Ip.model.Rede;
+import br.dev.edvan.classificador_de_Ip.utils.RedeChecker;
 
 public class ConversorTela {
 	//
@@ -102,10 +103,16 @@ public class ConversorTela {
 			public void actionPerformed(ActionEvent e) {
 				// Passando os valores do campo e criando o objeto
 				String ipCidr = textIp.getText();
+				
+				String inputErrorMessage =  RedeChecker.checkInput(ipCidr);
+				if (inputErrorMessage.equals("none")) {
+					FichaDeRede ficha = new FichaDeRede(ipCidr);					
+					displayResults(ficha);
+				}
+				else {
+					displayErrorMessage(inputErrorMessage);
+				}
 
-				FichaDeRede ficha = new FichaDeRede(ipCidr);
-
-				displayResults(ficha);
 
 			}
 
@@ -118,11 +125,15 @@ public class ConversorTela {
 			listDetails.setListData(ficha.getDetailsRede());
 			labelError.setText("");
 		} else {
-			labelError.setText(ficha.getErrorMessage());
-
-			listClassificacao.setListData(new String[1]);
-			listDetails.setListData(new String[1]);
+			displayErrorMessage(ficha.getErrorMessage());
 		}
 
+	}
+	
+	private void displayErrorMessage(String errorMessage) {
+		labelError.setText(errorMessage);
+		listClassificacao.setListData(new String[1]);
+		listDetails.setListData(new String[1]);
+		
 	}
 }

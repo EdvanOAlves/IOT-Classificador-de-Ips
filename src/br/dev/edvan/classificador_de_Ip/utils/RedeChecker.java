@@ -21,8 +21,9 @@ public class RedeChecker {
 			errorMessages.add("Insira 4 octetos devidamente separados por 3 pontos(.)");
 		}
 
-		if (!checkCharCount(ipCidr, '.', 1)) {
+		if (!checkCharCount(ipCidr, '/', 1)) {
 			errorMessages.add("Insira uma máscara CIDR indicada por apenas uma barra (/)");
+			
 		}
 
 		if (hasInvalidChars(ipCidr)) {
@@ -31,11 +32,10 @@ public class RedeChecker {
 
 		errorMessages.add("none");
 		return errorMessages.getFirst();
-		// TODO: No momento isso retorna uma lista de erros mas só o primeiro importa.
-		// poderia ser um return do String ao invés do errorMessages.add em cada
-		// checagem, mas dessa forma
-		// fica em aberto para implementar a funcionalidade de retornar uma lista com
-		// todos os erros detectados
+		// TODO: No momento isso retorna uma lista de erros mas pro nosso programa só o primeiro importa.
+		// poderia ser um return do String ao invés do errorMessages.add em cada checagem, mas dessa 
+		// forma fica em aberto para implementar a funcionalidade de retornar uma lista com todos os 
+		// erros detectados para o usuário
 	}
 
 	private static boolean isEmpty(String ipCidr) {

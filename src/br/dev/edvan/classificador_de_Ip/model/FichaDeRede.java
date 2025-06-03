@@ -1,5 +1,7 @@
 package br.dev.edvan.classificador_de_Ip.model;
 
+import br.dev.edvan.classificador_de_Ip.utils.RedeChecker;
+
 public class FichaDeRede {
 	Rede rede;
 	private String[] profileRede;
@@ -7,14 +9,11 @@ public class FichaDeRede {
 	private String errorMessage;
 
 	public FichaDeRede(String ipCidr) {
-		errorMessage = "none";
-		checkInput(ipCidr); // Para fazer a verificação de erros antes da criação da rede
+		rede = new Rede(ipCidr);
+
+		errorMessage = RedeChecker.checkRede(rede);
 		if (errorMessage.equals("none")) {
-			rede = new Rede(ipCidr);
-			checkRede(rede); // para fazer a verificação se é uma rede válida
-			if (errorMessage.equals("none")) {
-				makeFichas();				
-			}
+			makeFichas();
 		}
 	}
 
@@ -37,8 +36,6 @@ public class FichaDeRede {
 			}
 		}
 
-
-
 		// Contagem de elementos chave //
 		if (!checkCharCount(ipCidr, '.', 3)) {
 			if (errorMessage.equals("none")) {
@@ -50,28 +47,29 @@ public class FichaDeRede {
 				errorMessage = "Insira uma máscara CIDR indicada por apenas uma barra (/)";
 			}
 		}
-		
-		//	Símbolos especiais	//
+
+		// Símbolos especiais //
 		{
-			if (!ipCidr.matches("[0-9./]+$")){
+			if (!ipCidr.matches("[0-9./]+$")) {
 				if (errorMessage.equals("none")) {
 					errorMessage = "Insira apenas caracteres válidos (números, pontos e barra)";
 				}
-				
+
 			}
 		}
-		
+
 	}
 
-	public void checkRede(Rede rede) { 
-		//Verificações mais específicas, não é tanto input inválido mas sim as brechas que só quebram
-		//com funções da rede
-		
+	public void checkRede(Rede rede) {
+		// Verificações mais específicas, não é tanto input inválido mas sim as brechas
+		// que só quebram
+		// com funções da rede
+
 		{ // Máscara vazia?
 			if (rede.getIpIsolated().length < 2) {
 				errorMessage = "Insira um valor de máscara";
 			}
-			
+
 		}
 		{ // Octetos vazios? //
 			if (rede.getIpSplit().length < 4) { // Resolvendo bug de input "10.../25", octetos vazios basicamente
@@ -85,13 +83,12 @@ public class FichaDeRede {
 				}
 			}
 		}
-		
-		
+
 		{// Verificando se a máscara é válida
 			if ((rede.getMask() < 0) || (rede.getMask() > 32)) {
 				errorMessage = "A máscara CIDR deve estar entre 0 e 32";
 			}
-			
+
 		}
 
 	}
