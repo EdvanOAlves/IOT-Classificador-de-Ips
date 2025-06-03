@@ -119,12 +119,13 @@ public class ConversorTela {
 		// Passando os valores do campo e criando o objeto
 		String ipCidr = textIp.getText();
 
-		ArrayList<String> inputErrorMessage = RedeChecker.checkInput(ipCidr);
-		if (inputErrorMessage.getFirst().equals("none")) {
+		ArrayList<String> inputErrorMessages = RedeChecker.checkInput(ipCidr);
+		if (inputErrorMessages.getFirst().equals("none")) {
 			FichaDeRede ficha = new FichaDeRede(ipCidr);
 			displayResults(ficha);
 		} else {
-			displayErrorMessage(inputErrorMessage);
+			labelError.setText("Input inválido, erros detectados:");
+			displayErrorMessage(inputErrorMessages);
 		}
 
 	}
@@ -136,6 +137,7 @@ public class ConversorTela {
 			listDetails.setListData(ficha.getDetailsRede());
 			labelError.setText("");
 		} else {
+			labelError.setText("Rede impossível, erros detectados:");
 			displayErrorMessage(ficha.getErrorMessages());
 		}
 
@@ -146,8 +148,6 @@ public class ConversorTela {
 		for (int i = 0; i< errorMessage.length ; i++) {
 			errorMessage[i] = inputErrorMessage.get(i);
 		}
-		
-		labelError.setText("Erros encontrados:");
 		listDetails.setListData(new String[1]);
 		listClassificacao.setForeground(Color.red);
 		listClassificacao.setListData(errorMessage);

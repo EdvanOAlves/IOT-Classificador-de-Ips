@@ -231,19 +231,9 @@ public class Rede {
 
 	public String getNetIp() {
 		String[] netIp = ipSplit;
-		if (mask == 8) {
-			netIp[1] = "0";
-			netIp[2] = "0";
-			netIp[3] = "0";
-		}
-
-		else if (mask == 16) {
-			netIp[2] = "0";
-			netIp[3] = "0";
-		}
-
-		else if (mask == 24) {
-			netIp[3] = "0";
+		
+		for (int i = mask/8; !(i == 4) ; i++) { //For loop para zerar todos os octetos não mascarados
+			netIp[i] = "0";
 		}
 
 		return netIp[0] + "." + netIp[1] + "." + netIp[2] + "." + netIp[3];
