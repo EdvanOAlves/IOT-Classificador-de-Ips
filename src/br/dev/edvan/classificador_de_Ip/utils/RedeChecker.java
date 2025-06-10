@@ -7,27 +7,27 @@ import br.dev.edvan.classificador_de_Ip.model.Rede;
 public class RedeChecker {
 
 	public static ArrayList<String> checkInput(String ipCidr) {
-		ArrayList<String> errorMessages = new ArrayList<>();
+		ArrayList<String> errorMessages = new ArrayList<String>();
 
 		if (isEmpty(ipCidr)) {
 			errorMessages.add("Campo vazio");
 		}
 
 		if (hasLetters(ipCidr)) {
-			errorMessages.add("Caracteres inválidos (contém letras)");
+			errorMessages.add("Caracteres invalidos (contem letras)");
 		}
 
 		if (!checkCharCount(ipCidr, '.', 3)) {
-			errorMessages.add("Octetos não estão devidamente separados por 3 pontos(.)");
+			errorMessages.add("Octetos nao estao devidamente separados por 3 pontos(.)");
 		}
 
 		if (!checkCharCount(ipCidr, '/', 1)) {
-			errorMessages.add("Máscara CIDR não está devidamente indicada por uma barra (/)");
+			errorMessages.add("Mascara CIDR nao esta devidamente indicada por uma barra (/)");
 			
 		}
 
 		if (hasInvalidChars(ipCidr)) {
-			errorMessages.add("Caracteres inválidos detectados (Símbolos especiais)");
+			errorMessages.add("Caracteres invalidos detectados (Simbolos especiais)");
 		}
 
 		if (errorMessages.size() == 0) {
@@ -53,12 +53,12 @@ public class RedeChecker {
 		return !ipCidr.matches("[0-9./]+$");
 	}
 
-	// Para verificar redes impossíveis
+	// Para verificar redes impossiveis
 	public static ArrayList<String> checkRede(Rede rede) {
 		ArrayList<String> errorMessages = new ArrayList<>();
 
 		if (isEmptyMask(rede)) {
-			errorMessages.add("Máscara vazia");
+			errorMessages.add("Mascara vazia");
 		}
 
 		if (hasEmptyOctets(rede)) {
@@ -67,11 +67,11 @@ public class RedeChecker {
 		}
 
 		if (hasOutOfRangeOctets(rede)) {
-			errorMessages.add("Existe um ou mais octetos além do limite (0 a 255)");
+			errorMessages.add("Existe um ou mais octetos alem do limite (0 a 255)");
 		}
 
 		if (hasInvalidMask(rede)) {
-			errorMessages.add("Máscara CIDR além do limite (0 a 32)");
+			errorMessages.add("Mascara CIDR alem do limite (0 a 32)");
 		}
 		
 		if (errorMessages.size() == 0) {
@@ -103,13 +103,12 @@ public class RedeChecker {
 	}
 
 	private static boolean checkCharCount(String string, char targetChar, int expectedAmmount) {
-		// Função para verificar a contagem de algum caracter específico
-		// Recebe um String a verificar, um char pra fazer a contagem e qual seria a
-		// quantidade certa
-		// desse char no String, retorna true se estiver de acordo com a contagem, false
-		// em caso contrário.
+		// Metodo para verificar a contagem de algum caracter especifico
+		// Recebe um String a verificar, um char pra fazer a contagem e um int que indica a
+		// quantidade certa desse char no String, retorna true se estiver de acordo com a contagem,
+		// se nao, retorna false.
 		int charCount = 0;
-		for (int i = 0; i < string.length(); i++) { // Verificação do String
+		for (int i = 0; i < string.length(); i++) { // Verificacao do String
 			if (string.charAt(i) == targetChar) { // contagem de pontos
 				charCount++;
 			}

@@ -14,16 +14,16 @@ public class FichaDeRede {
 		rede = new Rede(ipCidr);
 
 		errorMessages = RedeChecker.checkRede(rede);
-		if (errorMessages.getFirst().equals("none")) {
+		if (errorMessages.get(0).equals("none")) {
 			makeFichas();
 		}
 	}
 
-	// MAKE FICHAS, o método que vai decidir o tipo de fichas que vai fazer e como
-	// fazer, diferenciar se é sub-rede, etc.
+	// MAKE FICHAS, o metodo que vai decidir o tipo de fichas que vai fazer e como
+	// fazer, diferenciar, considerar a existencia de sub-redes, etc.
 	//
 	private void makeFichas() {
-		if (rede.getMask() == 32) { // Caso CIDR 32, é um caso único
+		if (rede.getMask() == 32) { // Caso CIDR 32, e um caso unico
 			profileRede = getClassificacaoVisualDeRede();
 			detailsRede = getFichaRede32();
 
@@ -40,6 +40,7 @@ public class FichaDeRede {
 		else { // Caso de Sub-rede com CIDR abaixo de 24
 			profileRede = getClassificacaoVisualDeSubRede();
 			detailsRede = new String[1];
+			detailsRede[0] = "A implementar metodo de super redes";
 
 		}
 
@@ -58,7 +59,7 @@ public class FichaDeRede {
 		return errorMessages;
 	}
 
-	// CONSTRUÇÃO PRIMEIRA AREA
+	// CONSTRUCAO PRIMEIRA AREA
 	private String[] getClassificacaoVisualDeRede() { // Montando a ficha da primeira Area
 		String[] classificacaoVisual = new String[6];
 
@@ -67,7 +68,7 @@ public class FichaDeRede {
 		classificacaoVisual[2] = "Mascara (Decimal): " + rede.getDecimalMask();
 		classificacaoVisual[3] = "Mascara (Binario): " + rede.getBinaryMask();
 		classificacaoVisual[4] = "Quantidade de ips disponiveis: " + rede.getAvaliableIps();
-		classificacaoVisual[5] = "Número de Redes: 1"; // TODO: Isso aqui tinha que ser uma variavel em Rede
+		classificacaoVisual[5] = "Numero de Redes: 1"; // TODO: Isso aqui tinha que ser uma variavel em Rede
 
 		return classificacaoVisual;
 	}
@@ -80,21 +81,21 @@ public class FichaDeRede {
 		classificacaoVisual[2] = "Mascara (Decimal): " + rede.getDecimalMask();
 		classificacaoVisual[3] = "Mascara (Binario): " + rede.getBinaryMask();
 		classificacaoVisual[4] = "Quantidade de ips disponiveis: " + rede.getAvaliableIps();
-		classificacaoVisual[5] = "Número de SubRedes: " + rede.getQuantSubRede();
+		classificacaoVisual[5] = "Numero de SubRedes: " + rede.getQuantSubRede();
 
 		return classificacaoVisual;
 	}
 
-	// CONSTRUÇÃO SEGUNDA AREA
+	// CONSTRUCAO SEGUNDA AREA
 	public String[] getFichaRede() { // Sem Sub-Redes
 		String[] listFicha;
 
 		listFicha = new String[6];
 		listFicha[0] = "REDE";
-		listFicha[1] = "Endereço de rede: " + rede.getNetIp();
-		listFicha[2] = "Primeiro ip válido: " + rede.getHostStart();
-		listFicha[3] = "Último ip válido: " + rede.getHostEnd();
-		listFicha[4] = "Endereço de broadcast: " + rede.getBroadcastIp();
+		listFicha[1] = "Endereco de rede: " + rede.getNetIp();
+		listFicha[2] = "Primeiro ip valido: " + rede.getHostStart();
+		listFicha[3] = "Ultimo ip valido: " + rede.getHostEnd();
+		listFicha[4] = "Endereco de broadcast: " + rede.getBroadcastIp();
 		listFicha[5] = " ";
 
 		return listFicha;
@@ -102,9 +103,9 @@ public class FichaDeRede {
 
 	public String[] getFichasSubRedeC() { // Para nossas benditas Redes de CIDR 24+
 
-		// Para fazer as fichas de várias subredes fiz um array de arrays
+		// Para fazer as fichas de multiplas subredes fiz um array de arrays
 		// (buildFichasRedeC)
-		// Esse método chama essa função e converte pra um array único, pro ListPane
+		// Esse metodo chama essa funcao e converte pra um array unico, pro ListPane
 		// aceitar (listFichas)
 
 		String[][] fichasSubRedeC = buildFichasSubRedeC();
@@ -123,10 +124,10 @@ public class FichaDeRede {
 		String[] listFichas = new String[6];
 
 		listFichas[0] = "SUB-REDE";
-		listFichas[1] = "Endereço de rede: " + rede.getIp();
-		listFichas[2] = "Endereço de broadcast: " + rede.getIp();
-		listFichas[3] = "Primeiro ip válido: N/A";
-		listFichas[4] = "Último ip válido: N/A";
+		listFichas[1] = "Endereco de rede: " + rede.getIp();
+		listFichas[2] = "Endereco de broadcast: " + rede.getIp();
+		listFichas[3] = "Primeiro ip valido: N/A";
+		listFichas[4] = "Ultimo ip valido: N/A";
 		listFichas[5] = " ";
 		return listFichas;
 
@@ -135,8 +136,8 @@ public class FichaDeRede {
 	private String[][] buildFichasSubRedeC() {
 		String[][] fichasSubRede = new String[rede.getQuantSubRede() + 1][6];
 		// Criando uma lista de todas as redes
-		// o primeiro parâmetro vai ditar quantas redes, logo quantas fichas
-		// o segundo é só pra formatar a ficha, 1 titulo, 3 campos de valores, uma linha
+		// o primeiro parametro vai ditar quantas redes, logo quantas fichas
+		// o segundo serve para formatar a ficha, 1 titulo, 3 campos de valores, uma linha
 		// vazia
 
 		for (int i = 0; i < rede.getQuantSubRede(); i++) {
@@ -149,10 +150,10 @@ public class FichaDeRede {
 			int[] rangeEnds = rede.getRangeEnds();
 
 			fichasSubRede[i][0] = "SUB-REDE: " + (i + 1);
-			fichasSubRede[i][1] = "Endereço de rede: " + ipMasked + "" + octetosDeRede[i];
-			fichasSubRede[i][2] = "Primeiro ip válido: " + ipMasked + rangeStarts[i];
-			fichasSubRede[i][3] = "Último ip válido: " + ipMasked + rangeEnds[i];
-			fichasSubRede[i][4] = "Endereço de broadcast: " + ipMasked + octetosDeBroadcast[i];
+			fichasSubRede[i][1] = "Endereco de rede: " + ipMasked + "" + octetosDeRede[i];
+			fichasSubRede[i][2] = "Primeiro ip valido: " + ipMasked + rangeStarts[i];
+			fichasSubRede[i][3] = "Ultimo ip valido: " + ipMasked + rangeEnds[i];
+			fichasSubRede[i][4] = "Endereco de broadcast: " + ipMasked + octetosDeBroadcast[i];
 			fichasSubRede[i][5] = " ";
 
 		}

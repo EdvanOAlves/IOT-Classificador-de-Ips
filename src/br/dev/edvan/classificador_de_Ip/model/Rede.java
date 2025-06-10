@@ -11,7 +11,7 @@ public class Rede {
 	int[] rangeStarts;
 	int[] rangeEnds;
 
-	public Rede(String ip) { // Método construtor,
+	public Rede(String ip) { // Metodo construtor,
 		setIp(ip); // Guardando o input inicial
 		isolateIp(); //
 		splitIp(); // Separando o array de ips
@@ -42,7 +42,7 @@ public class Rede {
 	}
 
 	public String[] getIpIsolated() {
-		// get do ip separado entre endereço e CIDR
+		// get do ip separado entre endereco e CIDR
 		return ipIsolated;
 	}
 
@@ -62,8 +62,8 @@ public class Rede {
 		}
 
 		return (int) (Math.pow(2, 8 - brokenCidr));
-		// 2^<bits disponíveis>
-		// <bits disponíveis> = 8-<Máscara do Octeto>
+		// 2^<bits disponiveis>
+		// <bits disponíveis> = 8-<Mascara do Octeto>
 	}
 
 	public String[] getIpSplit() {
@@ -75,7 +75,7 @@ public class Rede {
 	}
 
 	// Gets de valores convertidos, públicos para acesso da ficha que leva a
-	// interface Gráfica
+	// interface Grafica
 
 	public char getClasse() {
 		char ipClasse = 'z'; // Valor inicial alerta de falhas
@@ -95,7 +95,7 @@ public class Rede {
 		return ipClasse;
 	}
 
-	public String getDecimalMask() { // método público para retornar uma String da máscara
+	public String getDecimalMask() { // metodo publico para retornar uma String da mascara
 		int[] splitDecimalMask = extractDecimalMask();
 		String decimalMask = String.format("%d.%d.%d.%d", splitDecimalMask[0], splitDecimalMask[1], splitDecimalMask[2],
 				splitDecimalMask[3]);
@@ -109,19 +109,16 @@ public class Rede {
 		return binaryMask;
 	}
 
-	public int getAvaliableIps() { // Calculando a quantidade de endereços disponíveis
+	public int getAvaliableIps() { // Calculando a quantidade de enderecos disponiveis
 		double avaliableIps = Math.pow(2.0, (32 - mask));
 		return ((int) avaliableIps - 2);
-
-		// TODO ips disponíveis no caso de sub-rede 25+ lá, ele precisa desconsiderar
-		// os endereços de Rede e Broadcast imagino eu
 	}
 
-	// Funções privadas para auxiliar os gets públicos:
+	// Funcoes privadas para auxiliar os gets publicos:
 	private int[] extractDecimalMask() {
 		int[] splitDecimalMask = new int[4]; // Iniciando array
 
-		int maskRef = mask; // Fazendo uma referencia da mascara para não alterar o valor original
+		int maskRef = mask; // Fazendo uma referencia da mascara para nao alterar o valor original
 		for (int i = 0; i < 4; i++) { // Loop que vai montar o array de octetos
 			if (maskRef == 0) {
 				splitDecimalMask[i] = 0;
@@ -137,7 +134,7 @@ public class Rede {
 		return splitDecimalMask;
 	}
 
-	private String[] extractBinaryMask() { // Conversão da máscara para binário
+	private String[] extractBinaryMask() { // Conversao da mascara para binario
 		String[] splitBinaryMask = new String[4];
 		int maskRef = mask;
 		for (int i = 0; i < 4; i++) {
@@ -164,8 +161,8 @@ public class Rede {
 
 	/*
 	 * 
-	 * SUB-REDES (Aqui são métodos que foram criados para atender a demanda extra do
-	 * professor de exibir mais informações em caso de Sub-Redes com máscara CIDR
+	 * SUB-REDES (Aqui sao metodos que foram criados para atender a demanda extra do
+	 * professor de exibir mais informac�es em caso de Sub-Redes com mascara CIDR
 	 * acima de 24, se um dia eu decidir revisitar esse programa vou reajustar para
 	 * funcionar com as Sub-redes abaixo de CIDR 24)
 	 * 
@@ -221,18 +218,21 @@ public class Rede {
 
 	// EXTRA: Detalhes de Sub Rede em Rede
 	/* 
-	 * TODO: Tem bastante redundância aqui que poderia receber uma reordenada para deixar o código mais limpo:
-	 * hostStart[3] é netIp[3] +1, hostEnd[3] é broadCastIp[3]-1. Todos preenchem os outros octetos de
-	 * acordo com a máscara. Dá pra fazer uma função que lida com a parte mascarada e passa para essas
-	 * outras funções alterarem só o último octeto. 
-	 * Por enquanto vou deixar a redundância porque já faz o que eu preciso
+	 * TODO: Tem bastante redundancia aqui que poderia receber uma reordenada para deixar o codigo mais limpo:
+	 * 		hostStart[n] sempre vai ser netIp[n] +1, 
+	 * 		hostEnd[n] sempr vai ser broadCastIp[n]-1.
 	 * 
+	 * 		Todos preenchem os outros octetos de acordo com a macara. Poderia ser feita uma funcao que lida com
+	 * 		a parte mascarada e essas outras funcoes alteram somente o ultimo octeto
+	 * 
+	 * 		Por enquanto vou deixar a redundancia porque ja atende os requisitos do projeto
+	 *  
 	 */
 
 	public String getNetIp() {
 		String[] netIp = ipSplit;
 		
-		for (int i = mask/8; !(i == 4) ; i++) { //For loop para zerar todos os octetos não mascarados
+		for (int i = mask/8; !(i == 4) ; i++) { //For loop para zerar todos os octetos nao-mascarados
 			netIp[i] = "0";
 		}
 
@@ -246,7 +246,7 @@ public class Rede {
 			hostStart[i] = "0";
 		}
 
-		hostStart[3] = "1"; // O primeiro ip válido vai ter sempre 1 no ultimo octeto
+		hostStart[3] = "1"; // O primeiro ip valido vai ter sempre 1 no ultimo octeto
 
 		return hostStart[0] + "." + hostStart[1] + "." + hostStart[2] + "." + hostStart[3];
 	}
@@ -258,7 +258,7 @@ public class Rede {
 			hostEnd[i] = "255";
 		}
 		
-		hostEnd[3] = "254"; // O ultimo ip válido vai ter sempre 254 no ultimo octeto
+		hostEnd[3] = "254"; // O ultimo ip valido vai ter sempre 254 no ultimo octeto
 
 		return hostEnd[0] + "." + hostEnd[1] + "." + hostEnd[2] + "." + hostEnd[3];
 
@@ -267,7 +267,7 @@ public class Rede {
 	public String getBroadcastIp() {
 		String[] broadcastIp = ipSplit;
 		
-		for (int i = mask/8; !(i == 4) ; i++) { //For loop para zerar todos os octetos não mascarados
+		for (int i = mask/8; !(i == 4) ; i++) { //For loop para zerar todos os octetos nao-mascarados
 			broadcastIp[i] = "255";
 		}
 		

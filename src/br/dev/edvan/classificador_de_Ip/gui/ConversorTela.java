@@ -24,7 +24,7 @@ public class ConversorTela {
 	// DECLARANDO OS ELEMENTOS
 	//
 
-	// Comunicacao com o usario e Input
+	// Comunicacao com o usuario e Input
 	private JLabel labelIp;
 	private JLabel labelError;
 	private JTextField textIp;
@@ -76,7 +76,7 @@ public class ConversorTela {
 		// Obtendo referencia do Container, o painel de conteudo da janela
 		Container container = tela.getContentPane();
 
-		// JList e ScrollPane que vai receber o output para as informações básicas
+		// JList e ScrollPane que vai receber o output para as informacoes basicas
 		listClassificacao = new JList();
 		scrollClassificacao = new JScrollPane(listClassificacao);
 		scrollClassificacao.setBounds(20, 150, 395, 115);
@@ -120,24 +120,24 @@ public class ConversorTela {
 		String ipCidr = textIp.getText();
 
 		ArrayList<String> inputErrorMessages = RedeChecker.checkInput(ipCidr);
-		if (inputErrorMessages.getFirst().equals("none")) {
+		if (inputErrorMessages.get(0).equals("none")) {
 			FichaDeRede ficha = new FichaDeRede(ipCidr);
 			displayResults(ficha);
 		} else {
-			labelError.setText("Input inválido, erros detectados:");
+			labelError.setText("Input invalido, erros detectados:");
 			displayErrorMessage(inputErrorMessages);
 		}
 
 	}
 
 	private void displayResults(FichaDeRede ficha) {
-		if (ficha.getErrorMessages().getFirst().equals("none")) { // Verificacao, se nao houve nenhum erro
+		if (ficha.getErrorMessages().get(0).equals("none")) { // Verificacao, se nao houve nenhum erro
 			listClassificacao.setForeground(Color.black);
 			listClassificacao.setListData(ficha.getProfileRede());
 			listDetails.setListData(ficha.getDetailsRede());
 			labelError.setText("");
 		} else {
-			labelError.setText("Rede impossível, erros detectados:");
+			labelError.setText("Rede impossivel, erros detectados:");
 			displayErrorMessage(ficha.getErrorMessages());
 		}
 
